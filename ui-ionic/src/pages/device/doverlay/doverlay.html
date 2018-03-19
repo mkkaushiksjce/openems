@@ -1,0 +1,21 @@
+<ion-header no-border>
+  <ion-navbar color="primary" hideBackButton="true">
+    <ion-title>Fabian Schwarzbeck
+      <br>
+      <ion-note>fems 45</ion-note>
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="settings"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-tabs color="primary" no-border-top>
+    <ion-tab tabTitle="Energiemonitor" [root]="tab1"></ion-tab>
+    <ion-tab tabTitle="Energietabelle" [root]="tab2"></ion-tab>
+    <ion-tab tabTitle="Historie" [root]="tab3"></ion-tab>
+  </ion-tabs>
+</ion-content>

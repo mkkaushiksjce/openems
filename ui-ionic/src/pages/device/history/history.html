@@ -1,0 +1,41 @@
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-md-3>
+        <ion-card justify-content-center>
+          <ion-item>
+            <ion-label>
+              <button ion-button block (click)="openBasicModal()">
+                <ion-icon name="list-box"></ion-icon>  08.03.18 - 18.04.18</button>
+            </ion-label>
+          </ion-item>
+        </ion-card>
+
+      </ion-col>
+      <ion-col col-12 col-md-9>
+        <ion-card>
+          <div class="row">
+            <div class="col-md-6">
+              <div style="display: block;">
+                <canvas baseChart width="800" height="400" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                  [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div style="display: block;">
+                <canvas baseChart width="800" height="400" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                  [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+            </div>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

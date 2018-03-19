@@ -1,0 +1,40 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Zeitraum: xy.xy.xy - yx.yx.yx</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="viewCtrl.dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="viewCtrl.dismiss()">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-row justify-content-center>
+    <ion-col col-12 col-md-3>
+      <button ion-button>Heute</button>
+    </ion-col>
+    <ion-col col-12 col-md-3>
+      <button ion-button>Gestern</button>
+    </ion-col>
+    <ion-col col-12 col-md-3>
+      <button ion-button>letzte Woche</button>
+    </ion-col>
+    <ion-calendar closeIcon=true doneIcon=true [(ngModel)]="dateRange" [options]="optionsRange" [type]="type" [format]="'YYYY-MM-DD'">
+    </ion-calendar>
+    <ion-row justify-content-center>
+      <ion-col>
+        <span col-4 item-left>
+          <button ion-button small (click)="getCalendarViewDate()">get view date</button>
+        </span>
+        <span col-4 item-end>
+          <button ion-button small (click)="serCalendarViewDate()">set view date: 2018-2-1</button>
+        </span>
+      </ion-col>
+    </ion-row>
+  </ion-row>
+</ion-content>
