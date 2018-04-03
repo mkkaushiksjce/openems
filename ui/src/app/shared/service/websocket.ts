@@ -188,9 +188,19 @@ export class Websocket {
       /*
        * Query reply
        */
+      // message = { messageId: { ui: ... } }
       if ("messageId" in message && "ui" in message.messageId) {
         // Receive a reply with a message id -> find device and forward to devices' replyStream
         let messageId = message.messageId.ui;
+
+        // for(let deviceName in this.devices) {
+        //   // this.device = { 'fems': Device, 'fems7': Device }
+        //   let device : Device = this.devices[deviceName];
+
+        //   let obs = device.replyStreams[messageId];
+        //   obs.next(message);
+        // }
+
         for (let deviceName in this.replyStreams) {
           if (messageId in this.replyStreams[deviceName]) {
             this.replyStreams[deviceName][messageId].next(message);

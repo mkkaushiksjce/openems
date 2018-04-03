@@ -73,9 +73,31 @@ export class Device {
   public refreshConfig(): BehaviorSubject<ConfigImpl> {
     // TODO use sendMessageWithReply()
     let message = DefaultMessages.configQuery(this.edgeId);
+    // Z. B. 
+  // message =  {
+  //     messageId: {
+  //         ui: "123-456"
+  //     },
+  //     edgeId: edgeId,
+  //     config: {
+  //         mode: "update",
+  //         thing: thingId,
+  //         channel: channelId,
+  //         value: value
+  //     }
+  // }
     let messageId = message.messageId.ui;
+    // messageId = "123-456"
     this.replyStreams[messageId] = new Subject<DefaultMessages.Reply>();
+    // this.replyStreams = {
+    //  "123-456": Subject/Observable
+    // }
+    // this.replyStreams["123-456"]
+
     this.send(message);
+    // sendet Nachricht an Edge
+
+
     // wait for reply
     this.replyStreams[messageId].first().subscribe(reply => {
       let config = (<DefaultMessages.ConfigQueryReply>reply).config;

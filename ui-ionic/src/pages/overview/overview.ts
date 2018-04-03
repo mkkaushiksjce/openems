@@ -4,6 +4,7 @@ import { PopoverController } from 'ionic-angular';
 import { DoverlayPage } from '../device/doverlay/doverlay';
 import { DpopoverPage } from '../device/dpopover/dpopover';
 import { OwpopoverPage } from '../owpopover/owpopover';
+import { WebSocketSubject } from 'rxjs/observable/dom/WebSocketSubject';
 
 
 @Component({
@@ -11,6 +12,11 @@ import { OwpopoverPage } from '../owpopover/owpopover';
   templateUrl: 'overview.html'
 })
 export class OverviewPage {
+  private socket: WebSocketSubject<any>;
+
+  ionViewDidLoad() {
+    
+  }
 
   showSearchBar: boolean = false;
 

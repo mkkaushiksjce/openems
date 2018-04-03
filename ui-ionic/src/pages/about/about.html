@@ -16,6 +16,25 @@
         </ion-avatar>
         <h2>FEMS UI</h2>
         <p>Benutzeroberfläche für FEMS und OpenEMS</p>
+        <button ion-button color="primary" (click)="connect()" outline end>
+          Connect
+        </button>
+        <button ion-button color="primary" (click)="login()" outline end>
+          Login
+        </button>
+        <button ion-button color="primary" (click)="getConfig()" outline end>
+          GetConfig
+        </button>
+        <button ion-button color="primary" (click)="test1()" outline end>test1
+        </button>
+        <button ion-button color="primary" (click)="queryhistoric()" outline end>historic
+        </button>
+        <button ion-button color="primary" (click)="logout()" outline end>
+          <ion-icon name="backspace"></ion-icon>
+        </button>
+        <button ion-button color="primary" (click)="connect()" outline end>
+          <ion-icon name="at"></ion-icon>
+        </button>
       </ion-item>
     </ion-list>
     <ion-item text-wrap>
