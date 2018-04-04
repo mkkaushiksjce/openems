@@ -1,8 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler, NavController, Nav } from 'ionic-angular';
 import { MyApp } from './app.component';
-
 import { OverviewPage } from '../pages/overview/overview';
 
 
@@ -23,6 +22,8 @@ import { TablePage } from '../pages/device/table/table';
 import { HistoryPage } from '../pages/device/history/history';
 import { TimemenuePage } from '../pages/device/history/timemenue/timemenue';
 import { MonitorPage } from '../pages/device/monitor/monitor';
+import { LoginPage } from '../pages/login/login';
+import { Websocket } from '../pages/websocket/websocket';
 
 
 
@@ -40,7 +41,8 @@ import { MonitorPage } from '../pages/device/monitor/monitor';
     TablePage,
     HistoryPage,
     TimemenuePage,
-    MonitorPage
+    MonitorPage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
@@ -61,12 +63,14 @@ import { MonitorPage } from '../pages/device/monitor/monitor';
     TablePage,
     HistoryPage,
     TimemenuePage,
-    MonitorPage
+    MonitorPage,
+    LoginPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    Websocket
   ]
 })
 export class AppModule { }

@@ -10,6 +10,8 @@ import { Device } from '../device';
 import { DefaultTypes } from '../shared/service/defaulttypes';
 import { UUID } from 'angular2-uuid';
 import { format } from 'date-fns';
+import { Websocket } from '../websocket/websocket';
+import { variable } from '@angular/compiler/src/output/output_ast';
 //import { environment as env } from 
 
 @Component({
@@ -29,39 +31,18 @@ export class AboutPage {
   // }
   private event = new Subject<String>();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public websocket: Websocket) {
   }
 
   connect() {
-    console.log("connect()");
-    this.socket = WebSocketSubject.create("ws://" + location.hostname + ":8085");
-    this.socket.subscribe(message => {
-      /*
-       * UI receive
-       */
-      console.log("RECV ", message);
-      if ("messageId" in message) {
-        let messageId = message.messageId.ui;
-        console.log("ID: ", messageId)
-        this.platzhalter[messageId].next(message)
-
-      }
-    });
+    this.websocket.connect();
   }
 
-  login(): void {
-    console.log("login()");
-    let message = {
-      authenticate: {
-        mode: "login",
-        password: "admin"
-      }
-    }
-    console.log("SEND: ", message);
-    this.socket.socket.send(JSON.stringify(message));
+  login() {
+    this.websocket.login();
   }
 
-  getConfig(edgeId: 0) {
+  getConfig(edgeId: number) {
     console.log("getConfig()");
     /*
      * UI send
@@ -118,11 +99,12 @@ export class AboutPage {
     console.log("SEND: ", message);
     this.socket.socket.send(JSON.stringify(message));
   }
+}
 
-  test1() {
-    console.log("test1()");
-    // this.platzhalter.next("Neue Nachricht");
-  }
+// test1() {
+//   console.log(this.websocket.test);
+  // this.platzhalter.next("Neue Nachricht");
+
 
   // subscribe() {
   //   let message = {
@@ -220,7 +202,7 @@ export class AboutPage {
   //   // this.socket.socket.send(JSON.stringify(message));
   // }
 
-}
+
 
 
 

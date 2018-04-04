@@ -1,12 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Platform, MenuController, Nav } from 'ionic-angular';
+import { Platform, MenuController, Nav, NavController } from 'ionic-angular';
 
 import { OverviewPage } from '../pages/overview/overview';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { GsettingsPage } from '../pages/gsettings/gsettings';
+import { LoginPage } from '../pages/login/login';
+import { Websocket } from '../pages/websocket/websocket'
 
 
 
@@ -17,14 +19,14 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   // make HelloIonicPage the root (or first) page
-  rootPage = OverviewPage;
+  rootPage = LoginPage;
   pages: Array<{ title: string, component: any }>;
 
   constructor(
     public platform: Platform,
     public menu: MenuController,
     public statusBar: StatusBar,
-    public splashScreen: SplashScreen
+    public splashScreen: SplashScreen,
   ) {
     this.initializeApp();
 
