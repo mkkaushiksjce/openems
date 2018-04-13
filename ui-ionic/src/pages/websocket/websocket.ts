@@ -8,6 +8,10 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DefaultTypes } from '../shared/service/defaulttypes';
 import { UUID } from 'angular2-uuid';
 import { format } from 'date-fns';
+import { Utils } from '../shared/service/utils';
+// import { Device } from '../devicesettings/device';
+import { Role } from '../type/role';
+import { DefaultMessages } from '../shared/service/defaultmessages';
 
 /**
  * Generated class for the WebsocketPage page.
@@ -19,6 +23,11 @@ import { format } from 'date-fns';
 @Injectable()
 export class Websocket {
 
+
+  // private _devices: BehaviorSubject<{ [name: string]: Device }> = new BehaviorSubject({});
+  // public get devices() {
+  //   return this._devices;
+  // }
   public test = "Hallo Fabian";
   private socket: WebSocketSubject<any>;
   public status: DefaultTypes.ConnectionStatus = "connecting";
@@ -70,7 +79,38 @@ export class Websocket {
         console.log("danach 1")
       }
       console.log("danach 2")
+      /* 
+  * Get Metadata
+  */
+      // if ("metadata" in message) {
+      //   if ("edges" in message.metadata) {
+      //     let devices = <DefaultTypes.MessageMetadataDevice[]>message.metadata.edges;
+      //     let newDevices = {};
+      //     for (let device of devices) {
+      //       let replyStream: { [messageId: string]: Subject<any> } = {};
+      //       this.replyStreams[device.name] = replyStream;
+      //       let newDevice = new Device(
+      //         device.id,
+      //         device.name,
+      //         device.comment,
+      //         device.producttype,
+      //         Role.getRole(device.role),
+      //         device.online,
+      //         replyStream,
+      //         this
+      //       );
+      //       newDevices[newDevice.name] = newDevice;
+      //     }
+      //     this.devices.next(newDevices);
+          
+      //     console.log(devices)
+      //   }
+      // }
+
     });
+
+
+
   }
 
   login(): void {
@@ -142,4 +182,19 @@ export class Websocket {
     console.log("SEND: ", message);
     this.socket.socket.send(JSON.stringify(message));
   }
+
+  logout() {
+    let message = {
+      authenticate: {
+        mode: "logout"
+      }
+
+    }
+    console.log("SEND: ", message);
+    this.socket.socket.send(JSON.stringify(message));
+  }
+
+
+
 }
+

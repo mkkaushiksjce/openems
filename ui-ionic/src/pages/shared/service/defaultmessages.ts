@@ -53,6 +53,7 @@ export class DefaultMessages {
     }
 
     public static currentDataSubscribe(edgeId: number, channels: DefaultTypes.ChannelAddresses): DefaultTypes.IdentifiedMessage {
+        // this.currentDataSubscribe(0, { "ess0": ["Soc", "ActivePower"], "_bridge0": ["State"] });
         return {
             messageId: {
                 ui: UUID.UUID()
@@ -66,6 +67,7 @@ export class DefaultMessages {
     };
 
     public static historicDataQuery(edgeId: number, fromDate: Date, toDate: Date, timezone: number /*offset in seconds*/, channels: DefaultTypes.ChannelAddresses): DefaultTypes.IdentifiedMessage {
+        // this.historicDataQuery(0, new Date(), new Date(), 2 * 60 * 60, {"ess0": ["Soc"]});
         return {
             messageId: {
                 ui: UUID.UUID()

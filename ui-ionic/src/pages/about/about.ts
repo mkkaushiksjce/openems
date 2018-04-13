@@ -6,7 +6,6 @@ import { Observable, Subject } from 'rxjs/Rx';
 
 import { WebSocketSubject } from 'rxjs/observable/dom/WebSocketSubject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Device } from '../device';
 import { DefaultTypes } from '../shared/service/defaulttypes';
 import { UUID } from 'angular2-uuid';
 import { format } from 'date-fns';
@@ -38,9 +37,7 @@ export class AboutPage {
     this.websocket.connect();
   }
 
-  login() {
-    this.websocket.login();
-  }
+
 
   getConfig(edgeId: number) {
     console.log("getConfig()");
@@ -191,16 +188,16 @@ export class AboutPage {
   // }
 
   // logout(): void {
-  //   this.event.next("Hallo Welt");
+  // //   this.event.next("Hallo Welt");
 
-  //   // let message = {
-  //   //   authenticate: {
-  //   //     mode: "logout"
-  //   //   }
-  //   // }
-  //   // console.log("SEND: ", message);
-  //   // this.socket.socket.send(JSON.stringify(message));
-  // }
+  //     let message = {
+  //       authenticate: {
+  //    //     mode: "logout"
+  //    //   }
+  //    // }
+  //    // console.log("SEND: ", message);
+  //     this.socket.socket.send(JSON.stringify(message));
+  //  }
 
 
 

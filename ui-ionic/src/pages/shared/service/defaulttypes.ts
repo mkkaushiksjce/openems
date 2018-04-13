@@ -1,6 +1,5 @@
-
+import { Role } from '../../type/role'
 import { UUID } from 'angular2-uuid';
-import { Role } from '../../type/role';
 
 export module DefaultTypes {
 

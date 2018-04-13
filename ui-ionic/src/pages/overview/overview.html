@@ -1,5 +1,6 @@
 <ion-header>
   <ion-navbar color="primary" hideBackButton="true">
+
     <!-- TODO Zeige entweder Searchbar oder Title nach Klick auf Suchen-Button -->
     <ion-searchbar *ngIf="showSearchBar" (ionInput)="getItems($event)" col-xl-4 offset-xl-4></ion-searchbar>
     <ion-title *ngIf="!showSearchBar">Übersicht </ion-title>
@@ -7,10 +8,13 @@
       <!-- <button ion-button icon-only (click)="itemTapped($event)"> -->
       <!-- presentPopover($event) -->
       <button ion-button icon-only (click)="showSearchBar = !showSearchBar">
-        <ion-icon name="search"></ion-icon>
+        <ion-icon *ngIf="edges.length > 4" name="search"></ion-icon>
       </button>
       <button ion-button icon-only (click)="presentPopover($event)">
         <ion-icon name="settings"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="logout()" outline end>
+        <ion-icon name="exit"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -20,14 +24,16 @@
 
   <ion-grid>
     <ion-row justify-content-center>
-      <ion-col col-12 col-md-3>
+      <ion-col col-12 col-md-3 *ngFor="let Edge of edges">
+        <!-- <ion-col col-12 col-md-3 *ngFor="let websocket.device of websocket.devices"> -->
         <ion-card (click)="itemTapped($event)">
-          <img src="/assets/imgs/mini_final.png" />
+          <img *ngIf="Edge.producttype === 'mini'" src="/assets/imgs/mini_final.png" />
+          <img *ngIf="Edge.producttype === 'pro'" src="/assets/imgs/pro_final.png" />
           <ion-card-content>
             <ion-row justify-content-center>
               <ion-card-title col-9 col-md-10 style="line-height: 38px;">
                 Fabian Schwarzbeck
-                <ion-note>fems 45</ion-note>
+                <ion-note>{{ Edge.name }}</ion-note>
               </ion-card-title>
               <ion-col col-3 col-md-2>
                 <button ion-button color="primary" outline end>
@@ -39,7 +45,7 @@
         </ion-card>
       </ion-col>
 
-      <ion-col col-12 col-md-3>
+      <!-- <ion-col col-12 col-md-3>
         <ion-card (click)="itemTapped($event)">
           <img src="/assets/imgs/mini_final.png" />
           <ion-card-content>
@@ -189,7 +195,7 @@
             </ion-row>
           </ion-card-content>
         </ion-card>
-      </ion-col>
+      </ion-col> -->
 
     </ion-row>
   </ion-grid>

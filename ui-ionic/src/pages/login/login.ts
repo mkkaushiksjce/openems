@@ -20,6 +20,7 @@ export class LoginPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public websocket: Websocket) {
+
   }
 
   ionViewDidLoad() {
@@ -30,17 +31,6 @@ export class LoginPage {
     this.websocket.login();
     this.navCtrl.push(OverviewPage);
   }
-
-
-
-
-
-  ueberschreiben() {
-    console.log(this.websocket.test)
-    this.websocket.test = "Hallo Stefan";
-    console.log(this.websocket.test)
-  }
-
 
 
 }
