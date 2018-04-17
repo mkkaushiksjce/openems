@@ -9,11 +9,11 @@ import { Websocket } from '../websocket/websocket';
 import { LoginPage } from '../login/login';
 
 
-interface Edge {
-  id: number,
-  name: string,
-  producttype: "mini" | "pro" | ""
-}
+// interface Edge {
+//   id: number,
+//   name: string,
+//   producttype: "mini" | "pro" | ""
+// }
 
 @Component({
   selector: 'page-overview',
@@ -21,86 +21,63 @@ interface Edge {
 })
 export class OverviewPage {
 
-  private edges: Edge[] = [
-    {
-      id: 0,
-      name: "fems1",
-      producttype: "mini"
-    },
-    {
-      id: 1,
-      name: "fems2",
-      producttype: "pro"
-    },
-    {
-      id: 2,
-      name: "fems3",
-      producttype: "pro"
-    },
-    {
-      id: 3,
-      name: "fems4",
-      producttype: "pro"
-    },
-    {
-      id: 4,
-      name: "fems5",
-      producttype: "mini"
-    },
-    {
-      id: 5,
-      name: "fems6",
-      producttype: "pro"
-    },
-    {
-      id: 6,
-      name: "fems7",
-      producttype: "mini"
-    }
-  ];
+  // private edges: Edge[] = [];
 
-  private metadata = {
-    "edges": [
-      {
-        "id": 0,
-        "name": "fems0",
-        "comment": "FEMS",
-        "producttype": "",
-        "role": "admin",
-        "online": true
-      },
-      {
-        "id": 1,
-        "name": "fems1",
-        "comment": "FEMS1",
-        "producttype": "",
-        "role": "admin",
-        "online": true
-      }
-    ]
-  }
+  // private metadata = {
+  //   "edges": [
+  //     {
+  //       "id": "0",
+  //       "name": "fems0",
+  //       "comment": "FEMS",
+  //       "producttype": "mini",
+  //       "role": "admin",
+  //       "online": true
+  //     },
+  //     {
+  //       "id": "1",
+  //       "name": "fems1",
+  //       "comment": "FEMS1",
+  //       "producttype": "pro",
+  //       "role": "admin",
+  //       "online": true
+  //     },
+  //     {
+  //       "id": "2",
+  //       "name": "fems2",
+  //       "comment": "FEMS2",
+  //       "producttype": "mini",
+  //       "role": "admin",
+  //       "online": true
+  //     }
+  //   ]
+  // }
 
   private socket: WebSocketSubject<any>;
 
   ionViewDidLoad() {
-    for(let edge of this.metadata.edges) {
-      console.log("EDGE", edge);
-    }
-    console.log(this.metadata.edges);
-    // parse metadata
+    // for (let edge of this.metadata.edges) {
+    //   this.edges.push({
+    //     id: edge.id,
+    //     name: edge.name,
+    //     comment: edge.comment,
+    //     producttype: edge.producttype,
+    //     role: edge.role,
+    //     online: edge.online
+    //   })
+    //   console.log("EDGE", edge);
+    // }
+    // console.log(this.metadata.edges);
+    // // parse metadata
 
-    this.edges.push(    {
-      id: 7,
-      name: "fems8",
-      producttype: "mini"
-    })
+
+    // console.log(this.edges);
   }
 
   showSearchBar: boolean = false;
 
   [x: string]: any;
   constructor(public navCtrl: NavController, public popoverCtrl: PopoverController, public websocket: Websocket) {
-
+   
   }
 
   itemTapped(event) {

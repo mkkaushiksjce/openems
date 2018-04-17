@@ -5,10 +5,8 @@
     <ion-searchbar *ngIf="showSearchBar" (ionInput)="getItems($event)" col-xl-4 offset-xl-4></ion-searchbar>
     <ion-title *ngIf="!showSearchBar">Übersicht </ion-title>
     <ion-buttons end>
-      <!-- <button ion-button icon-only (click)="itemTapped($event)"> -->
-      <!-- presentPopover($event) -->
       <button ion-button icon-only (click)="showSearchBar = !showSearchBar">
-        <ion-icon *ngIf="edges.length > 4" name="search"></ion-icon>
+        <ion-icon *ngIf="websocket.edges.length > 4" name="search"></ion-icon>
       </button>
       <button ion-button icon-only (click)="presentPopover($event)">
         <ion-icon name="settings"></ion-icon>
@@ -24,16 +22,16 @@
 
   <ion-grid>
     <ion-row justify-content-center>
-      <ion-col col-12 col-md-3 *ngFor="let Edge of edges">
-        <!-- <ion-col col-12 col-md-3 *ngFor="let websocket.device of websocket.devices"> -->
+      <ion-col col-12 col-md-3 *ngFor="let edge of websocket.edges">
         <ion-card (click)="itemTapped($event)">
-          <img *ngIf="Edge.producttype === 'mini'" src="/assets/imgs/mini_final.png" />
-          <img *ngIf="Edge.producttype === 'pro'" src="/assets/imgs/pro_final.png" />
+          <img *ngIf="edge.producttype === 'mini'" src="/assets/imgs/mini_final.png" />
+          <img *ngIf="edge.producttype === 'pro'" src="/assets/imgs/pro_final.png" />
+          <img *ngIf="edge.producttype === ''" src="/assets/imgs/commercial_final.png" />
           <ion-card-content>
             <ion-row justify-content-center>
               <ion-card-title col-9 col-md-10 style="line-height: 38px;">
                 Fabian Schwarzbeck
-                <ion-note>{{ Edge.name }}</ion-note>
+                <ion-note>{{ edge.name }}</ion-note>
               </ion-card-title>
               <ion-col col-3 col-md-2>
                 <button ion-button color="primary" outline end>
@@ -44,159 +42,6 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
-
-      <!-- <ion-col col-12 col-md-3>
-        <ion-card (click)="itemTapped($event)">
-          <img src="/assets/imgs/mini_final.png" />
-          <ion-card-content>
-            <ion-row justify-content-center>
-              <ion-card-title col-9 col-md-10 style="line-height: 38px;">
-                Fabian Schwarzbeck
-                <ion-note>fems 345</ion-note>
-              </ion-card-title>
-              <ion-col col-3 col-md-2>
-                <button ion-button color="primary" outline end>
-                  <ion-icon name="log-in"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-
-      <ion-col col-12 col-md-3>
-        <ion-card (click)="itemTapped($event)">
-          <img src="/assets/imgs/pro_final.png" />
-          <ion-card-content>
-            <ion-row justify-content-center>
-              <ion-card-title col-9 col-md-10 style="line-height: 38px;">
-                Fabian Schwarzbeck
-                <ion-note>fems 25</ion-note>
-              </ion-card-title>
-              <ion-col col-3 col-md-2>
-                <button ion-button color="primary" outline end>
-                  <ion-icon name="log-in"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-
-      <ion-col col-12 col-md-3>
-        <ion-card (click)="itemTapped($event)">
-          <img src="/assets/imgs/industrial_final.png" />
-          <ion-card-content>
-            <ion-row justify-content-center>
-              <ion-card-title col-9 col-md-10 style="line-height: 38px;">
-                Fabian Schwarzbeck
-                <ion-note>fems 445</ion-note>
-              </ion-card-title>
-              <ion-col col-3 col-md-2>
-                <button ion-button color="primary" outline end>
-                  <ion-icon name="log-in"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-
-      <ion-col col-12 col-md-3>
-        <ion-card (click)="itemTapped($event)">
-          <img src="/assets/imgs/industrial_final.png" />
-          <ion-card-content>
-            <ion-row justify-content-center>
-              <ion-card-title col-9 col-md-10 style="line-height: 38px;">
-                Fabian Schwarzbeck
-                <ion-note>fems 22</ion-note>
-              </ion-card-title>
-              <ion-col col-3 col-md-2>
-                <button ion-button color="primary" outline end>
-                  <ion-icon name="log-in"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-
-      <ion-col col-12 col-md-3>
-        <ion-card (click)="itemTapped($event)">
-          <img src="/assets/imgs/mini_final.png" />
-          <ion-card-content>
-            <ion-row justify-content-center>
-              <ion-card-title col-9 col-md-10 style="line-height: 38px;">
-                Fabian Schwarzbeck
-                <ion-note>fems 46</ion-note>
-              </ion-card-title>
-              <ion-col col-3 col-md-2>
-                <button ion-button color="primary" outline end>
-                  <ion-icon name="log-in"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-
-      <ion-col col-12 col-md-3>
-        <ion-card (click)="itemTapped($event)">
-          <img src="/assets/imgs/pro_final.png" />
-          <ion-card-content>
-            <ion-row justify-content-center>
-              <ion-card-title col-9 col-md-10 style="line-height: 38px;">
-                Fabian Schwarzbeck
-                <ion-note>fems 67</ion-note>
-              </ion-card-title>
-              <ion-col col-3 col-md-2>
-                <button ion-button color="primary" outline end>
-                  <ion-icon name="log-in"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-
-      <ion-col col-12 col-md-3>
-        <ion-card (click)="itemTapped($event)">
-          <img src="/assets/imgs/commercial_final.png" />
-          <ion-card-content>
-            <ion-row justify-content-center>
-              <ion-card-title col-9 col-md-10 style="line-height: 38px;">
-                Fabian Schwarzbeck
-                <ion-note>fems 50</ion-note>
-              </ion-card-title>
-              <ion-col col-3 col-md-2>
-                <button ion-button color="primary" outline end>
-                  <ion-icon name="log-in"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-
-      <ion-col col-12 col-md-3>
-        <ion-card (click)="itemTapped($event)">
-          <img src="/assets/imgs/industrial_final.png" />
-          <ion-card-content>
-            <ion-row justify-content-center>
-              <ion-card-title col-9 col-md-10 style="line-height: 38px;">
-                Fabian Schwarzbeck
-                <ion-note>fems 51</ion-note>
-              </ion-card-title>
-              <ion-col col-3 col-md-2>
-                <button ion-button color="primary" outline end>
-                  <ion-icon name="log-in"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-      </ion-col> -->
-
     </ion-row>
   </ion-grid>
 </ion-content>
