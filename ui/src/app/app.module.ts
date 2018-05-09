@@ -18,11 +18,6 @@ import { AppComponent } from './app.component';
 import { Websocket, Service } from './shared/shared';
 import { MyTranslateLoader } from './shared/translate/translate';
 
-// locale data
-import { LOCALE_ID } from '@angular/core';
-import { registerLocaleData } from '@angular/common';
-import localeDe from '@angular/common/locales/de';
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -45,12 +40,7 @@ import localeDe from '@angular/common/locales/de';
     {
       provide: ErrorHandler,
       useExisting: Service
-    },
-    { provide: LOCALE_ID, useValue: 'de' }
+    }
   ]
 })
-export class AppModule {
-  constructor() {
-    registerLocaleData(localeDe);
-  }
-}
+export class AppModule { }
