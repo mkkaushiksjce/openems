@@ -56,8 +56,13 @@ $colors: (
   background-position: center;
 }
 
+.toast{
+  text-align: center;
+}
 
 
+
+$toast-max-width: 300px;
 
 
 // App iOS Variables
@@ -70,6 +75,7 @@ $colors: (
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
+
 
 
 

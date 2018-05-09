@@ -23,7 +23,7 @@
   <ion-grid>
     <ion-row justify-content-center>
       <ion-col col-12 col-md-3 *ngFor="let edge of websocket.edges">
-        <ion-card (click)="itemTapped($event)">
+        <ion-card (click)="itemTapped(edge.edgeId)">
           <img *ngIf="edge.producttype === 'mini'" src="/assets/imgs/mini_final.png" />
           <img *ngIf="edge.producttype === 'pro'" src="/assets/imgs/pro_final.png" />
           <img *ngIf="edge.producttype === ''" src="/assets/imgs/commercial_final.png" />

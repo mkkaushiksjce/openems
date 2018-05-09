@@ -24,6 +24,9 @@ import { TimemenuePage } from '../pages/device/history/timemenue/timemenue';
 import { MonitorPage } from '../pages/device/monitor/monitor';
 import { LoginPage } from '../pages/login/login';
 import { Websocket } from '../pages/websocket/websocket';
+import { enGB } from 'date-fns/locale';
+import { MonitablePage } from '../pages/monitable/monitable';
+import { Service } from '../pages/shared/service/service';
 
 
 
@@ -42,7 +45,8 @@ import { Websocket } from '../pages/websocket/websocket';
     HistoryPage,
     TimemenuePage,
     MonitorPage,
-    LoginPage
+    LoginPage,
+    MonitablePage,
   ],
   imports: [
     BrowserModule,
@@ -64,13 +68,15 @@ import { Websocket } from '../pages/websocket/websocket';
     HistoryPage,
     TimemenuePage,
     MonitorPage,
-    LoginPage
+    LoginPage,
+    MonitablePage,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    Websocket
+    Websocket,
+    Service
   ]
 })
 export class AppModule { }

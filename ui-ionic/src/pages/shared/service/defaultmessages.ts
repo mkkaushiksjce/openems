@@ -5,6 +5,9 @@ import { DefaultTypes } from './defaulttypes';
 
 export class DefaultMessages {
 
+  currentDataSubscribe(): any {
+    throw new Error("Method not implemented.");
+  }
     public static authenticateLogin(password: string, username?: string) {
         let m = {
             authenticate: {

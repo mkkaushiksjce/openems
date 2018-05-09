@@ -13,9 +13,16 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-tabs color="primary" no-border-top>
+  <ion-tabs *ngIf="isMobile" color="primary" no-border-top>
     <ion-tab tabTitle="Energiemonitor" [root]="tab1"></ion-tab>
-    <ion-tab tabTitle="Energietabelle" [root]="tab2"></ion-tab>
+    <ion-tab tabTitle="Energietabelle" [root]="tab2"></ion-tab> -->
+    <ion-tab tabTitle="Historie" [root]="tab3"></ion-tab>
+  </ion-tabs>
+  <ion-tabs *ngIf="!isMobile" color="primary" no-border-top>
+    <ion-tab tabTitle="Energiemonitor/Tabelle" [root]="tab4"></ion-tab>
     <ion-tab tabTitle="Historie" [root]="tab3"></ion-tab>
   </ion-tabs>
 </ion-content>
+
+
+<!-- *ngIf="!isMobile" // *ngIf="innerWidth > 1280" -->

@@ -100,74 +100,74 @@ export class AboutPage {
 
 // test1() {
 //   console.log(this.websocket.test);
-  // this.platzhalter.next("Neue Nachricht");
+// this.platzhalter.next("Neue Nachricht");
 
 
-  // subscribe() {
-  //   let message = {
-  //     currentdata: {
-  //       mode: "subscribe",
-  //       channels: {
-  //         _bridge0: ["State"],
-  //         _bridge1: ["State"],
-  //         _controller0: ["State"],
-  //         _controller1: ["State"],
-  //         _controller3: ["State"],
-  //       }
-  //     }
-  //   }
-  //   console.log("SEND: ", message);
-  //   this.socket.socket.send(JSON.stringify(message));
-  // }
+// subscribe() {
+//   let message = {
+//     currentdata: {
+//       mode: "subscribe",
+//       channels: {
+//         _bridge0: ["State"],
+//         _bridge1: ["State"],
+//         _controller0: ["State"],
+//         _controller1: ["State"],
+//         _controller3: ["State"],
+//       }
+//     }
+//   }
+//   console.log("SEND: ", message);
+//   this.socket.socket.send(JSON.stringify(message));
+// }
 
-  // subscribe(edgeId: 0, thingId: string, channelId: string, value: any): void {
-  //   let message = {
-  //     messageId: {
-  //       ui: UUID.UUID()
-  //   },
-  //   edgeId: 0,
-  //   config: {
-  //       mode: "update",
-  //       thing: thingId,
-  //       channel: channelId,
-  //       value: value
-  //   }
-  //   }
-  //   console.log("SEND: ", message);
-  //   this.socket.socket.send(JSON.stringify(message));
+// subscribe(edgeId: 0, thingId: string, channelId: string, value: any): void {
+//   let message = {
+//     messageId: {
+//       ui: UUID.UUID()
+//   },
+//   edgeId: 0,
+//   config: {
+//       mode: "update",
+//       thing: thingId,
+//       channel: channelId,
+//       value: value
+//   }
+//   }
+//   console.log("SEND: ", message);
+//   this.socket.socket.send(JSON.stringify(message));
 
-  // }
+// }
 
-  // currentdatasub(edgeId: number, channels: DefaultTypes.ChannelAddresses): void {
-  //   let message = {
-  //     messageId: {
-  //       ui: UUID.UUID()
-  //     },
-  //     edgeId: 0,
-  //     currentData: {
-  //       mode: "subscribe",
-  //       channels: {
-  //         _bridge0: ["State"],
-  //         _bridge1: ["State"],
-  //         _controller0: ["State"],
-  //         _controller1: ["State"],
-  //         _controller2: ["State"],
-  //         _controller3: ["State"],
-  //         _controller4: ["State"],
-  //         _device0: ["State"],
-  //         _device1: ["State"],
-  //         _persistence0: ["State"],
-  //         _scheduler0: ["State"],
-  //         ess0: ["State"],
-  //         meter0: ["State"],
-  //         meter1: ["State"],
-  //         system0: ["State"]
-  //       }
-  //     }
-  //   }
-  //   console.log("SEND: ", message);
-  //   this.socket.socket.send(JSON.stringify(message));
-  // }
+//  currentdatasub(edgeId: number, channels: DefaultTypes.ChannelAddresses): void {
+//    let message = {
+//      messageId: {
+//        ui: UUID.UUID()
+//      },
+//      edgeId: 0,
+//      currentData: {
+//        mode: "subscribe",
+//        channels: {
+//          _bridge0: ["State"],
+//          _bridge1: ["State"],
+//          _controller0: ["State"],
+//         _controller1: ["State"],
+//          _controller2: ["State"],
+//          _controller3: ["State"],
+//          _controller4: ["State"],
+//          _device0: ["State"],
+//          _device1: ["State"],
+//          _persistence0: ["State"],
+//          _scheduler0: ["State"],
+//          ess0: ["State"],
+//          meter0: ["State"],
+//          meter1: ["State"],
+//          system0: ["State"]
+//        }
+//      }
+//    }
+//    console.log("SEND: ", message);
+//    this.socket.socket.send(JSON.stringify(message));
+//  }
 
   // queryhistoric(edgeId: number, fromDate: Date, toDate: Date, timezone: number, channels: DefaultTypes.ChannelAddresses): void {
   //   let message = {
