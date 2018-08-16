@@ -38,6 +38,7 @@ JPM-Command:				openems-edge
 	osgi.identity;filter:='(osgi.identity=io.openems.edge.ess.core)',\
 	osgi.identity;filter:='(osgi.identity=io.openems.edge.ess.fenecon.commercial40)',\
 	osgi.identity;filter:='(osgi.identity=io.openems.edge.ess.kaco.blueplanet.gridsave50)',\
+	osgi.identity;filter:='(osgi.identity=io.openems.edge.ess.sinexcel)',\
 	osgi.identity;filter:='(osgi.identity=io.openems.edge.ess.streetscooter)',\
 	osgi.identity;filter:='(osgi.identity=io.openems.edge.evcs.keba.kecontact)',\
 	osgi.identity;filter:='(osgi.identity=io.openems.edge.io.kmtronic)',\
@@ -76,6 +77,7 @@ JPM-Command:				openems-edge
 	io.openems.edge.ess.fenecon.commercial40;version=snapshot,\
 	io.openems.edge.ess.kaco.blueplanet.gridsave50;version=snapshot,\
 	io.openems.edge.ess.streetscooter;version=snapshot,\
+	io.openems.edge.ess.sinexcel;version=snapshot,\
 	io.openems.edge.evcs.keba.kecontact;version=snapshot,\
 	io.openems.edge.io.kmtronic;version=snapshot,\
 	io.openems.edge.kostal.piko;version=snapshot,\
