@@ -115,6 +115,7 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 				
 				new FC3ReadRegistersTask(0x0257, Priority.HIGH, //
 						m(EssSinexcel.ChannelId.DC_Voltage2, new UnsignedWordElement(0x0257)))
+				//Testing different parameters
 				
 				);
 	};
