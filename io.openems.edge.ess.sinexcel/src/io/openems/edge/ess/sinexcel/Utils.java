@@ -36,8 +36,9 @@ public class Utils {
 					switch (channelId) {
 					case SUNSPEC_DID_0103:
 					case Analog_DC_Power:
-					case Analog_DC_Voltage:
-					case Analog_DC_Current:
+					case DC_Voltage1:
+					case DC_Voltage2:
+					case DC_Current:
 					case ACTIVE_POWER:
 					case REACTIVE_POWER:
 						return new IntegerReadChannel(ess, channelId);

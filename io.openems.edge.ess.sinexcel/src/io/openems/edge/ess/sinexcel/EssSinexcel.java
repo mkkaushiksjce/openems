@@ -56,12 +56,16 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 	
 	public enum ChannelId implements io.openems.edge.common.channel.doc.ChannelId {
 		SUNSPEC_DID_0103(new Doc()), //
-		Analog_DC_Voltage(new Doc() //
+		DC_Voltage1(new Doc() //
 				.unit(Unit.VOLT)), //
+		
+		DC_Voltage2(new Doc() //
+				.unit(Unit.VOLT)), //
+		
 		Analog_DC_Power(new Doc() //
 				.unit(Unit.WATT) //
 				.text(POWER_DOC_TEXT)),
-		Analog_DC_Current(new Doc() //
+		DC_Current(new Doc() //
 				.unit(Unit.AMPERE)), //
 		ACTIVE_POWER(new Doc() //
 				.type(OpenemsType.INTEGER) //
@@ -71,6 +75,7 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 				.type(OpenemsType.INTEGER) //
 				.unit(Unit.VOLT_AMPERE_REACTIVE) //
 				.text(POWER_DOC_TEXT)),
+		
 		;
 		
 		private final Doc doc;
@@ -93,11 +98,11 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 				new FC3ReadRegistersTask(0x008D, Priority.HIGH, //
 						m(EssSinexcel.ChannelId.Analog_DC_Power, new SignedWordElement(0x008D))),		//Magnification = 100
 				
-				new FC3ReadRegistersTask(0x008E, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Analog_DC_Voltage, new UnsignedWordElement(0x008E))), 	//Magnification = 10 
+				new FC3ReadRegistersTask(0x00A8, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.DC_Voltage1, new UnsignedWordElement(0x00A8))), 	//Magnification = 10 
 				
-				new FC3ReadRegistersTask(0x008F, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Analog_DC_Current, new UnsignedWordElement(0x008D))), 	//Magnification = 10
+				new FC3ReadRegistersTask(0x00AA, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.DC_Current, new UnsignedWordElement(0x00AA))), 	//Magnification = 10
 				
 				new FC3ReadRegistersTask(0x0087, Priority.HIGH, //
 						m(SymmetricEss.ChannelId.ACTIVE_POWER, new SignedWordElement(0x0087))),			//Target_Active_Power, Magnification = 10
@@ -105,8 +110,11 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 				new FC3ReadRegistersTask(0x0088, Priority.HIGH, //
 						m(SymmetricEss.ChannelId.REACTIVE_POWER, new SignedWordElement(0x0088))),		//Target_Reactive_Power, Magnification = 10
 				
-				new FC3ReadRegistersTask(0x00B8, Priority.HIGH, //
-						m(SymmetricEss.ChannelId.SOC, new UnsignedWordElement(0x00B8)))				//SOC
+				new FC3ReadRegistersTask(0x00B9, Priority.HIGH, //
+						m(SymmetricEss.ChannelId.SOC, new UnsignedWordElement(0x00B8))),					//SOC
+				
+				new FC3ReadRegistersTask(0x0257, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.DC_Voltage2, new UnsignedWordElement(0x0257)))
 				
 				);
 	};
