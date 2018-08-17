@@ -35,17 +35,12 @@ public class Utils {
 				}), Arrays.stream(EssSinexcel.ChannelId.values()).map(channelId -> {
 					switch (channelId) {
 					case SUNSPEC_DID_0103:
-						return new IntegerReadChannel(ess, channelId);
 					case Analog_DC_Power:
 					case Analog_DC_Voltage:
 					case Analog_DC_Current:
 					case ACTIVE_POWER:
 					case REACTIVE_POWER:
-					case SOC_SF:
-						break;
-					default:
-						break;
-						
+						return new IntegerReadChannel(ess, channelId);
 					}
 					return null;
 				}) //

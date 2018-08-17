@@ -71,8 +71,6 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 				.type(OpenemsType.INTEGER) //
 				.unit(Unit.VOLT_AMPERE_REACTIVE) //
 				.text(POWER_DOC_TEXT)),
-		SOC_SF(new Doc() //
-				.unit(Unit.NONE)), //
 		;
 		
 		private final Doc doc;
@@ -107,8 +105,8 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 				new FC3ReadRegistersTask(0x0088, Priority.HIGH, //
 						m(SymmetricEss.ChannelId.REACTIVE_POWER, new SignedWordElement(0x0088))),		//Target_Reactive_Power, Magnification = 10
 				
-				new FC3ReadRegistersTask(0x00B9, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.SOC_SF, new UnsignedWordElement(0x00B9)))				//SOC
+				new FC3ReadRegistersTask(0x00B8, Priority.HIGH, //
+						m(SymmetricEss.ChannelId.SOC, new UnsignedWordElement(0x00B8)))				//SOC
 				
 				);
 	};
