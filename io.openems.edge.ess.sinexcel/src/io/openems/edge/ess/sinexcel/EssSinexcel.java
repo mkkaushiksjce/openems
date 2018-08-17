@@ -12,11 +12,14 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.openems.common.types.OpenemsType;
 import io.openems.edge.bridge.modbus.api.AbstractOpenemsModbusComponent;
 import io.openems.edge.bridge.modbus.api.ModbusProtocol;
+import io.openems.edge.bridge.modbus.api.element.SignedWordElement;
 import io.openems.edge.bridge.modbus.api.element.UnsignedWordElement;
 import io.openems.edge.bridge.modbus.api.task.FC3ReadRegistersTask;
 import io.openems.edge.common.channel.doc.Doc;
+import io.openems.edge.common.channel.doc.Unit;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.common.taskmanager.Priority;
 import io.openems.edge.ess.api.SymmetricEss;
@@ -52,9 +55,26 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 	}
 	
 	public enum ChannelId implements io.openems.edge.common.channel.doc.ChannelId {
-		SUNSPEC_DID_0103(new Doc()) //
+		SUNSPEC_DID_0103(new Doc()), //
+		Analog_DC_Voltage(new Doc() //
+				.unit(Unit.VOLT)), //
+		Analog_DC_Power(new Doc() //
+				.unit(Unit.WATT) //
+				.text(POWER_DOC_TEXT)),
+		Analog_DC_Current(new Doc() //
+				.unit(Unit.AMPERE)), //
+		ACTIVE_POWER(new Doc() //
+				.type(OpenemsType.INTEGER) //
+				.unit(Unit.WATT) //
+				.text(POWER_DOC_TEXT)), //
+		REACTIVE_POWER(new Doc() //
+				.type(OpenemsType.INTEGER) //
+				.unit(Unit.VOLT_AMPERE_REACTIVE) //
+				.text(POWER_DOC_TEXT)),
+		SOC_SF(new Doc() //
+				.unit(Unit.NONE)), //
 		;
-
+		
 		private final Doc doc;
 
 		private ChannelId(Doc doc) {
@@ -70,7 +90,26 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 	protected ModbusProtocol defineModbusProtocol(int unitId) {
 		return new ModbusProtocol(unitId, //
 				new FC3ReadRegistersTask(0x023A, Priority.LOW, //
-						m(EssSinexcel.ChannelId.SUNSPEC_DID_0103, new UnsignedWordElement(0x023A))) //
+						m(EssSinexcel.ChannelId.SUNSPEC_DID_0103, new UnsignedWordElement(0x023A))), //
+				
+				new FC3ReadRegistersTask(0x008D, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.Analog_DC_Power, new SignedWordElement(0x008D))),		//Magnification = 100
+				
+				new FC3ReadRegistersTask(0x008E, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.Analog_DC_Voltage, new UnsignedWordElement(0x008E))), 	//Magnification = 10 
+				
+				new FC3ReadRegistersTask(0x008F, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.Analog_DC_Current, new UnsignedWordElement(0x008D))), 	//Magnification = 10
+				
+				new FC3ReadRegistersTask(0x0087, Priority.HIGH, //
+						m(SymmetricEss.ChannelId.ACTIVE_POWER, new SignedWordElement(0x0087))),			//Target_Active_Power, Magnification = 10
+				
+				new FC3ReadRegistersTask(0x0088, Priority.HIGH, //
+						m(SymmetricEss.ChannelId.REACTIVE_POWER, new SignedWordElement(0x0088))),		//Target_Reactive_Power, Magnification = 10
+				
+				new FC3ReadRegistersTask(0x00B9, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.SOC_SF, new UnsignedWordElement(0x00B9)))				//SOC
+				
 				);
 	};
 }
