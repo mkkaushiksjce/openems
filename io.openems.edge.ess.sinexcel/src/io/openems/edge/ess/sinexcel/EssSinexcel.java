@@ -7,13 +7,17 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.event.EventHandler;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.service.metatype.annotations.Designate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.openems.common.types.OpenemsType;
 import io.openems.edge.bridge.modbus.api.AbstractOpenemsModbusComponent;
+import io.openems.edge.bridge.modbus.api.BridgeModbus;
+import io.openems.edge.bridge.modbus.api.ElementToChannelConverter;
 import io.openems.edge.bridge.modbus.api.ModbusProtocol;
 import io.openems.edge.bridge.modbus.api.element.SignedWordElement;
 import io.openems.edge.bridge.modbus.api.element.UnsignedWordElement;
@@ -39,10 +43,11 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 	@Reference
 	protected ConfigurationAdmin cm;
 	
-	@Activate
-	void activate(ComponentContext context, Config config) {
+	@Activate void activate(ComponentContext context, Config config) {
 		super.activate(context, config.service_pid(), config.id(), config.enabled(), DEFAULT_UNIT_ID, this.cm, "Modbus",
-				config.modbus_id()); //
+				config.modbus_id()); 
+		
+				
 	}
 
 	@Deactivate
@@ -52,20 +57,25 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 	
 	public EssSinexcel() {
 		Utils.initializeChannels(this).forEach(channel -> this.addChannel(channel));
+		
 	}
 	
+	@Reference(policy = ReferencePolicy.STATIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.MANDATORY)
+	protected void setModbus(BridgeModbus modbus) {
+		super.setModbus(modbus);						//Bridge Modbus
+	}
 	public enum ChannelId implements io.openems.edge.common.channel.doc.ChannelId {
 		SUNSPEC_DID_0103(new Doc()), //
-		DC_Voltage1(new Doc() //
+		Analog_DC_Voltage(new Doc() //
 				.unit(Unit.VOLT)), //
 		
-		DC_Voltage2(new Doc() //
+		DC_Voltage(new Doc() //
 				.unit(Unit.VOLT)), //
 		
 		Analog_DC_Power(new Doc() //
 				.unit(Unit.WATT) //
 				.text(POWER_DOC_TEXT)),
-		DC_Current(new Doc() //
+		Analog_DC_Current(new Doc() //
 				.unit(Unit.AMPERE)), //
 		ACTIVE_POWER(new Doc() //
 				.type(OpenemsType.INTEGER) //
@@ -75,7 +85,12 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 				.type(OpenemsType.INTEGER) //
 				.unit(Unit.VOLT_AMPERE_REACTIVE) //
 				.text(POWER_DOC_TEXT)),
-		
+		Analog_Active_Power_3Phase(new Doc()
+				.unit(Unit.WATT)),
+		Analog_Reactive_Power_3Phase(new Doc()
+				.unit(Unit.WATT)),
+		AC_Power(new Doc()
+				.unit(Unit.WATT))
 		;
 		
 		private final Doc doc;
@@ -87,9 +102,11 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 		@Override
 		public Doc doc() {
 			return this.doc;
-		}
+		
+	
 	}
-
+	}	
+		
 	protected ModbusProtocol defineModbusProtocol(int unitId) {
 		return new ModbusProtocol(unitId, //
 				new FC3ReadRegistersTask(0x023A, Priority.LOW, //
@@ -99,24 +116,39 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 						m(EssSinexcel.ChannelId.Analog_DC_Power, new SignedWordElement(0x008D))),		//Magnification = 100
 				
 				new FC3ReadRegistersTask(0x00A8, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.DC_Voltage1, new UnsignedWordElement(0x00A8))), 	//Magnification = 10 
+						m(EssSinexcel.ChannelId.Analog_DC_Voltage, new UnsignedWordElement(0x00A8))), 	//Magnification = 10 
 				
 				new FC3ReadRegistersTask(0x00AA, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.DC_Current, new UnsignedWordElement(0x00AA))), 	//Magnification = 10
+						m(EssSinexcel.ChannelId.Analog_DC_Current, new UnsignedWordElement(0x00AA))), 	//Magnification = 10
 				
 				new FC3ReadRegistersTask(0x0087, Priority.HIGH, //
-						m(SymmetricEss.ChannelId.ACTIVE_POWER, new SignedWordElement(0x0087))),			//Target_Active_Power, Magnification = 10
+						m(SymmetricEss.ChannelId.ACTIVE_POWER, new SignedWordElement(0x0087),
+								ElementToChannelConverter.SCALE_FACTOR_1)),			//Target_Active_Power, Magnification = 10
 				
 				new FC3ReadRegistersTask(0x0088, Priority.HIGH, //
-						m(SymmetricEss.ChannelId.REACTIVE_POWER, new SignedWordElement(0x0088))),		//Target_Reactive_Power, Magnification = 10
+						m(SymmetricEss.ChannelId.REACTIVE_POWER, new SignedWordElement(0x0088),
+								ElementToChannelConverter.SCALE_FACTOR_1)),		//Target_Reactive_Power, Magnification = 10
 				
 				new FC3ReadRegistersTask(0x00B9, Priority.HIGH, //
 						m(SymmetricEss.ChannelId.SOC, new UnsignedWordElement(0x00B8))),					//SOC
 				
 				new FC3ReadRegistersTask(0x0257, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.DC_Voltage2, new UnsignedWordElement(0x0257)))
-				//Testing different parameters
+						m(EssSinexcel.ChannelId.DC_Voltage, new UnsignedWordElement(0x0257))),
+				
+				new FC3ReadRegistersTask(0x007A, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.Analog_Active_Power_3Phase, new SignedWordElement(0x007A))),	// Kilo Watt
+				
+				new FC3ReadRegistersTask(0x007B, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.Analog_Reactive_Power_3Phase, new SignedWordElement(0x007B))),
+				
+				new FC3ReadRegistersTask(0x0248, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.AC_Power, new SignedWordElement(0x0248)))
+				//Testing different parameters 8.20.18
+				
 				
 				);
-	};
+	}
+
+
 }
+	

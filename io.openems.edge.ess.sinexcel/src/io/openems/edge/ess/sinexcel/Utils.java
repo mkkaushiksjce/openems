@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 import io.openems.edge.common.channel.AbstractReadChannel;
 import io.openems.edge.common.channel.IntegerReadChannel;
 import io.openems.edge.common.channel.StateCollectorChannel;
+import io.openems.edge.common.channel.doc.ChannelId;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.ess.api.SymmetricEss;
 
@@ -36,11 +37,14 @@ public class Utils {
 					switch (channelId) {
 					case SUNSPEC_DID_0103:
 					case Analog_DC_Power:
-					case DC_Voltage1:
-					case DC_Voltage2:
-					case DC_Current:
+					case Analog_DC_Voltage:
+					case DC_Voltage:
+					case Analog_DC_Current:
 					case ACTIVE_POWER:
 					case REACTIVE_POWER:
+					case Analog_Active_Power_3Phase:
+					case Analog_Reactive_Power_3Phase:
+					case AC_Power:
 						return new IntegerReadChannel(ess, channelId);
 					}
 					return null;
