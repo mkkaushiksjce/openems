@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 import io.openems.edge.common.channel.AbstractReadChannel;
+import io.openems.edge.common.channel.FloatReadChannel;
 import io.openems.edge.common.channel.IntegerReadChannel;
 import io.openems.edge.common.channel.StateCollectorChannel;
 import io.openems.edge.common.channel.doc.ChannelId;
@@ -36,15 +37,24 @@ public class Utils {
 				}), Arrays.stream(EssSinexcel.ChannelId.values()).map(channelId -> {
 					switch (channelId) {
 					case SUNSPEC_DID_0103:
+					case SOC:
 					case Analog_DC_Power:
-					case Analog_DC_Voltage:
 					case DC_Voltage:
-					case Analog_DC_Current:
 					case ACTIVE_POWER:
 					case REACTIVE_POWER:
 					case Analog_Active_Power_3Phase:
 					case Analog_Reactive_Power_3Phase:
 					case AC_Power:
+					case AC_Apparent_Power:
+					case AC_Reactive_Power:	
+					case Frequency:	
+					case Temperature:
+					case InvOutVolt_L1:
+					case InvOutVolt_L2:
+					case InvOutVolt_L3:
+					case InvOutCurrent_L1:
+					case InvOutCurrent_L2:
+					case InvOutCurrent_L3:
 						return new IntegerReadChannel(ess, channelId);
 					}
 					return null;

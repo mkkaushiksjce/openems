@@ -66,8 +66,9 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 	}
 	public enum ChannelId implements io.openems.edge.common.channel.doc.ChannelId {
 		SUNSPEC_DID_0103(new Doc()), //
-		Analog_DC_Voltage(new Doc() //
-				.unit(Unit.VOLT)), //
+		
+		SOC(new Doc()
+				.unit(Unit.PERCENT)),
 		
 		DC_Voltage(new Doc() //
 				.unit(Unit.VOLT)), //
@@ -75,8 +76,7 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 		Analog_DC_Power(new Doc() //
 				.unit(Unit.WATT) //
 				.text(POWER_DOC_TEXT)),
-		Analog_DC_Current(new Doc() //
-				.unit(Unit.AMPERE)), //
+		
 		ACTIVE_POWER(new Doc() //
 				.type(OpenemsType.INTEGER) //
 				.unit(Unit.WATT) //
@@ -85,12 +85,37 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 				.type(OpenemsType.INTEGER) //
 				.unit(Unit.VOLT_AMPERE_REACTIVE) //
 				.text(POWER_DOC_TEXT)),
+		
 		Analog_Active_Power_3Phase(new Doc()
 				.unit(Unit.WATT)),
 		Analog_Reactive_Power_3Phase(new Doc()
 				.unit(Unit.WATT)),
+		
 		AC_Power(new Doc()
-				.unit(Unit.WATT))
+				.unit(Unit.WATT)),
+		Frequency(new Doc()
+				.unit(Unit.HERTZ)),
+		Temperature(new Doc()
+				.unit(Unit.DEGREE_CELSIUS)),
+		AC_Apparent_Power(new Doc()
+				.unit(Unit.VOLT_AMPERE)),
+		AC_Reactive_Power(new Doc()
+				.unit(Unit.VOLT_AMPERE_REACTIVE)),
+		
+		InvOutVolt_L1(new Doc() //
+				.unit(Unit.VOLT)),
+		InvOutVolt_L2(new Doc() //
+				.unit(Unit.VOLT)),
+		InvOutVolt_L3(new Doc() //
+				.unit(Unit.VOLT)),
+		InvOutCurrent_L1(new Doc() //
+				.unit(Unit.AMPERE)),
+		InvOutCurrent_L2(new Doc() //
+				.unit(Unit.AMPERE)),
+		InvOutCurrent_L3(new Doc() //
+				.unit(Unit.AMPERE)),
+		
+				
 		;
 		
 		private final Doc doc;
@@ -113,40 +138,58 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 						m(EssSinexcel.ChannelId.SUNSPEC_DID_0103, new UnsignedWordElement(0x023A))), //
 				
 				new FC3ReadRegistersTask(0x008D, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Analog_DC_Power, new SignedWordElement(0x008D))),		//Magnification = 100
+						m(EssSinexcel.ChannelId.Analog_DC_Power, new SignedWordElement(0x008D))), // int16 // Line69 // Magnification = 100
 				
-				new FC3ReadRegistersTask(0x00A8, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Analog_DC_Voltage, new UnsignedWordElement(0x00A8))), 	//Magnification = 10 
+				new FC3ReadRegistersTask(0x024A, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.Frequency, new SignedWordElement(0x024))),	// int16	//Line 132 // Magnification = 100
 				
-				new FC3ReadRegistersTask(0x00AA, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Analog_DC_Current, new UnsignedWordElement(0x00AA))), 	//Magnification = 10
+				new FC3ReadRegistersTask(0x0084, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.Temperature, new SignedWordElement(0x0084))), // int 16 // Line 62	Magnification = 0
 				
-				new FC3ReadRegistersTask(0x0087, Priority.HIGH, //
-						m(SymmetricEss.ChannelId.ACTIVE_POWER, new SignedWordElement(0x0087),
-								ElementToChannelConverter.SCALE_FACTOR_1)),			//Target_Active_Power, Magnification = 10
+				new FC3ReadRegistersTask(0x024C, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.AC_Apparent_Power, new SignedWordElement(0x024C))), //	int16 // Line134 // Magnification = 0
 				
-				new FC3ReadRegistersTask(0x0088, Priority.HIGH, //
-						m(SymmetricEss.ChannelId.REACTIVE_POWER, new SignedWordElement(0x0088),
-								ElementToChannelConverter.SCALE_FACTOR_1)),		//Target_Reactive_Power, Magnification = 10
-				
-				new FC3ReadRegistersTask(0x00B9, Priority.HIGH, //
-						m(SymmetricEss.ChannelId.SOC, new UnsignedWordElement(0x00B8))),					//SOC
+				new FC3ReadRegistersTask(0x024E, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.AC_Reactive_Power, new SignedWordElement(0x024E))), //	int16 // Line136 // Magnification = 0
 				
 				new FC3ReadRegistersTask(0x0257, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.DC_Voltage, new UnsignedWordElement(0x0257))),
+						m(EssSinexcel.ChannelId.DC_Voltage, new UnsignedWordElement(0x0257))),	//NennSpannung //	uint16 // Line144 // Magnification = 100
 				
 				new FC3ReadRegistersTask(0x007A, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Analog_Active_Power_3Phase, new SignedWordElement(0x007A))),	// Kilo Watt
+						m(EssSinexcel.ChannelId.Analog_Active_Power_3Phase, new SignedWordElement(0x007A))), // Kilo Watt //int16 // Line55
 				
 				new FC3ReadRegistersTask(0x007B, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Analog_Reactive_Power_3Phase, new SignedWordElement(0x007B))),
+						m(EssSinexcel.ChannelId.Analog_Reactive_Power_3Phase, new SignedWordElement(0x007B))), //int16 // Line56
 				
 				new FC3ReadRegistersTask(0x0248, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.AC_Power, new SignedWordElement(0x0248)))
+						m(EssSinexcel.ChannelId.AC_Power, new SignedWordElement(0x0248))), //	int16 // Line130 // Magnification = 0
+				
+				new FC3ReadRegistersTask(0x0065, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.InvOutVolt_L1, new UnsignedWordElement(0x0065))), //	uint16 // Line36 // Magnification = 10
+				
+				new FC3ReadRegistersTask(0x0066, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.InvOutVolt_L2, new UnsignedWordElement(0x0066))), //	uint16 // Line37 // Magnification = 10
+				
+				new FC3ReadRegistersTask(0x0067, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.InvOutVolt_L3, new UnsignedWordElement(0x0067))), //	uint16 // Line38 // Magnification = 10
+				
+				new FC3ReadRegistersTask(0x0068, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.InvOutCurrent_L1, new UnsignedWordElement(0x0068))), //	uint16 // Line39 // Magnification = 10
+	
+				new FC3ReadRegistersTask(0x0069, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.InvOutCurrent_L2, new UnsignedWordElement(0x0069))), //	uint16 // Line40 // Magnification = 10
+				
+				new FC3ReadRegistersTask(0x006A, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.InvOutCurrent_L3, new UnsignedWordElement(0x006A))), //	uint16 // Line41 // Magnification = 10
+				
+				new FC3ReadRegistersTask(0x00B8, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.SOC, new UnsignedWordElement(0x00B8))) //	uint16 // Line91 // Magnification = 10
+				
+				);
 				//Testing different parameters 8.20.18
 				
 				
-				);
+				
 	}
 
 

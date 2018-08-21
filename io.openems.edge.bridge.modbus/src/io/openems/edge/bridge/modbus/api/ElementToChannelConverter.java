@@ -18,7 +18,7 @@ public class ElementToChannelConverter {
 			value -> value, //
 			// channel -> element
 			value -> value);
-
+	
 	/**
 	 * Applies a scale factor of -1.
 	 * 
