@@ -23,7 +23,11 @@ public enum Unit {
 	/*
 	 * Power
 	 */
-
+	
+	/**
+	 * Unit of Active Power [kW]
+	 */
+	KILO_WATT("kW"),
 	/**
 	 * Unit of Active Power [W]
 	 */
@@ -37,6 +41,10 @@ public enum Unit {
 	 */
 	VOLT_AMPERE_REACTIVE("var"),
 	/**
+	 * Unit of Reactive Power [kvar]
+	 */
+	KILO_VOLT_AMPERE_REACTIVE("kvar"),
+	/**
 	 * Unit of Apparent Power [VA]
 	 */
 	VOLT_AMPERE("VA"),
@@ -49,6 +57,10 @@ public enum Unit {
 	 * Unit of Voltage [V]
 	 */
 	VOLT("V"),
+	/**
+	 * Unit of Voltage [V]
+	 */
+	NEW_VOLT("V", VOLT, -1),
 	/**
 	 * Unit of Voltage [mV]
 	 */
@@ -100,11 +112,11 @@ public enum Unit {
 	/**
 	 * Unit of Temperature [�C]
 	 */
-	DEGREE_CELSIUS("�C"),
+	DEGREE_CELSIUS("°C"),
 	/**
 	 * Unit of Temperature [d�C]
 	 */
-	DEZIDEGREE_CELSIUS("d�C", DEGREE_CELSIUS, -1),
+	DEZIDEGREE_CELSIUS("d°C", DEGREE_CELSIUS, -1),
 
 	/*
 	 * Time
