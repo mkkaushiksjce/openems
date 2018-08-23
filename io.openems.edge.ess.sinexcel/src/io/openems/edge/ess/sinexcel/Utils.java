@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 import io.openems.edge.common.channel.AbstractReadChannel;
 import io.openems.edge.common.channel.FloatReadChannel;
 import io.openems.edge.common.channel.IntegerReadChannel;
+import io.openems.edge.common.channel.IntegerWriteChannel;
 import io.openems.edge.common.channel.StateCollectorChannel;
 import io.openems.edge.common.channel.doc.ChannelId;
 import io.openems.edge.common.component.OpenemsComponent;
@@ -36,7 +37,11 @@ public class Utils {
 					return null;
 				}), Arrays.stream(EssSinexcel.ChannelId.values()).map(channelId -> {
 					switch (channelId) {
-					case REQUESTED_STATE:
+					
+					case SETDATA_GridOnCmd:
+					case SETDATA_GridOffCmd:
+					case SETDATA_ModOffCmd:
+					case SETDATA_ModOnCmd:
 					case SUNSPEC_DID_0103:
 					case SOC:
 					case Analog_DC_Power:
@@ -58,7 +63,14 @@ public class Utils {
 					case InvOutCurrent_L3:
 					case DC_Current:
 					case Analog_DC_Current:
+					case Vendor_State:
+					case State:
 						return new IntegerReadChannel(ess, channelId);
+						
+					case Start:
+					case Stop:
+						return new IntegerWriteChannel(ess, channelId);
+				
 					}
 					return null;
 				}) //
