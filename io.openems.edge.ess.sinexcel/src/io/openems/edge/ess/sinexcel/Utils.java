@@ -62,9 +62,16 @@ public class Utils {
 					case InvOutCurrent_L2:
 					case InvOutCurrent_L3:
 					case DC_Current:
+					case DC_Power:
 					case Analog_DC_Current:
 					case Vendor_State:
 					case State:
+					case EVENT_1:
+					case EVENT_2:
+					case Vendor_EVENT_1:
+					case Vendor_EVENT_2:
+					case Vendor_EVENT_3:
+					case Vendor_EVENT_4:
 						return new IntegerReadChannel(ess, channelId);
 						
 					case Start:

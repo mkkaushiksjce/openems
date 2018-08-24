@@ -23,6 +23,7 @@ import io.openems.edge.bridge.modbus.api.AbstractOpenemsModbusComponent;
 import io.openems.edge.bridge.modbus.api.BridgeModbus;
 import io.openems.edge.bridge.modbus.api.ElementToChannelConverter;
 import io.openems.edge.bridge.modbus.api.ModbusProtocol;
+import io.openems.edge.bridge.modbus.api.element.SignedDoublewordElement;
 import io.openems.edge.bridge.modbus.api.element.SignedWordElement;
 import io.openems.edge.bridge.modbus.api.element.UnsignedDoublewordElement;
 import io.openems.edge.bridge.modbus.api.element.UnsignedWordElement;
@@ -86,26 +87,21 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 		Stop(new Doc().options(RequestedState.values())),
 		
 		SETDATA_ModOnCmd(new Doc()
-				.unit(Unit.NONE)),
-		
+				.unit(Unit.ON_OFF)),
 		SETDATA_ModOffCmd(new Doc()
-				.unit(Unit.NONE)),
+				.unit(Unit.ON_OFF)),
 		SETDATA_GridOnCmd(new Doc()
-				.unit(Unit.NONE)),
-		
+				.unit(Unit.ON_OFF)),
 		SETDATA_GridOffCmd(new Doc()
-				.unit(Unit.NONE)),
+				.unit(Unit.ON_OFF)),
 		
 		SOC(new Doc()
 				.unit(Unit.PERCENT)),
-		
 		DC_Voltage(new Doc() //
 				.unit(Unit.NEW_VOLT)), //
-		
 		Analog_DC_Power(new Doc() //
 				.unit(Unit.WATT) //
 				.text(POWER_DOC_TEXT)),
-		
 		ACTIVE_POWER(new Doc() //
 				.type(OpenemsType.INTEGER) //
 				.unit(Unit.WATT) //
@@ -114,12 +110,10 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 				.type(OpenemsType.INTEGER) //
 				.unit(Unit.VOLT_AMPERE_REACTIVE) //
 				.text(POWER_DOC_TEXT)),
-		
 		Analog_Active_Power_3Phase(new Doc()
 				.unit(Unit.KILO_WATT)),
 		Analog_Reactive_Power_3Phase(new Doc()
 				.unit(Unit.KILO_VOLT_AMPERE_REACTIVE)),
-		
 		AC_Power(new Doc()
 				.unit(Unit.WATT)),
 		Frequency(new Doc()
@@ -144,15 +138,28 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 		InvOutCurrent_L3(new Doc() //
 				.unit(Unit.AMPERE)),
 		
+		DC_Power(new Doc()
+				.unit(Unit.KILO_WATT)),
 		DC_Current(new Doc()
 				.unit(Unit.AMPERE)),
-		
 		Analog_DC_Current(new Doc()
 				.unit(Unit.AMPERE)),
 		
+		EVENT_1(new Doc()
+				.unit(Unit.NONE)),
+		EVENT_2(new Doc()
+				.unit(Unit.NONE)),
+		Vendor_EVENT_1(new Doc()
+				.unit(Unit.NONE)),
+		Vendor_EVENT_2(new Doc()
+				.unit(Unit.NONE)),
+		Vendor_EVENT_3(new Doc()
+				.unit(Unit.NONE)),
+		Vendor_EVENT_4(new Doc()
+				.unit(Unit.NONE)),
+		
 		Vendor_State(new Doc()
 				.unit(Unit.NONE)),
-				
 		State(new Doc()
 				.unit(Unit.NONE))
 		;
@@ -219,10 +226,10 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 		}
 	}
 	
-	public void doOnHandling() {
+	public void doHandling_ON() {
 		startSystem();
 	}
-	public void doOffHandling() {
+	public void doHandling_OFF() {
 		stopSystem();
 	}
 	
@@ -233,7 +240,7 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 		}
 		switch (event.getTopic()) {
 		case EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE:
-				doOffHandling();
+				doHandling_ON();
 			break;
 		}
 	}
@@ -252,10 +259,10 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 				
 				new FC6WriteRegisterTask(0x028B,									
 						m(EssSinexcel.ChannelId.Stop,
-								new UnsignedWordElement(0x028B))),		// Stop SETDATA_ModOnCmd
+								new UnsignedWordElement(0x028B))),		// Stop SETDATA_ModOffCmd
 				new FC6WriteRegisterTask(0x028D,									
 						m(EssSinexcel.ChannelId.Stop,
-								new UnsignedWordElement(0x028D))),		// Stop SETDATA_GridOnCmd
+								new UnsignedWordElement(0x028D))),		// Stop SETDATA_GridOffCmd
 			
 //----------------------------------------------------------READ--------------------------------------------------------------------				
 				new FC3ReadRegistersTask(0x023A, Priority.LOW, //
@@ -327,12 +334,33 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent implements Symme
 				new FC3ReadRegistersTask(0x0255, Priority.HIGH, 
 						m(EssSinexcel.ChannelId.DC_Current, new UnsignedWordElement(0x0255))),
 //				
-				new FC3ReadRegistersTask(0x0261, Priority.HIGH, 
-						m(EssSinexcel.ChannelId.Vendor_State, new UnsignedWordElement(0x0261))),
+//				new FC3ReadRegistersTask(0x0261, Priority.HIGH, 
+//						m(EssSinexcel.ChannelId.Vendor_State, new UnsignedWordElement(0x0261))),
+				
+//				new FC3ReadRegistersTask(0x0262, Priority.HIGH, 
+//						m(EssSinexcel.ChannelId.EVENT_1, new SignedDoublewordElement(0x0262))),
+				
+//				new FC3ReadRegistersTask(0x0264, Priority.HIGH, 
+//						m(EssSinexcel.ChannelId.EVENT_2, new SignedDoublewordElement(0x0264))),
 //				
+//				new FC3ReadRegistersTask(0x0266, Priority.HIGH, 
+//						m(EssSinexcel.ChannelId.Vendor_EVENT_1, new SignedDoublewordElement(0x0266))),
+//				
+//				new FC3ReadRegistersTask(0x0268, Priority.HIGH, 
+//						m(EssSinexcel.ChannelId.Vendor_EVENT_2, new SignedDoublewordElement(0x0268))),
+//				
+//				new FC3ReadRegistersTask(0x026A, Priority.HIGH, 
+//						m(EssSinexcel.ChannelId.Vendor_EVENT_3, new SignedDoublewordElement(0x026A))),
+//				
+//				new FC3ReadRegistersTask(0x026C, Priority.HIGH, 
+//						m(EssSinexcel.ChannelId.Vendor_EVENT_4, new SignedDoublewordElement(0x026C))),
+				
+				new FC3ReadRegistersTask(0x008D, Priority.HIGH, 
+						m(EssSinexcel.ChannelId.DC_Power, new SignedWordElement(0x008D))),
+				
 				new FC3ReadRegistersTask(0x0260, Priority.HIGH, 
 						m(EssSinexcel.ChannelId.State, new UnsignedWordElement(0x0260)))
-//				
+				
 				
 				);
 				//Testing different parameters 8.22.18
