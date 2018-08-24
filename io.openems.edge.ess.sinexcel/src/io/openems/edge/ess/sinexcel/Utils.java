@@ -37,7 +37,25 @@ public class Utils {
 					return null;
 				}), Arrays.stream(EssSinexcel.ChannelId.values()).map(channelId -> {
 					switch (channelId) {
-					
+//-------------------------------------------------EVENT BitField32------------------------------------------------------
+					case STATE_0:
+					case STATE_1:
+					case STATE_2:
+					case STATE_3:
+					case STATE_4:
+					case STATE_5:
+					case STATE_6:
+					case STATE_7:
+					case STATE_8:
+					case STATE_9:
+					case STATE_10:
+					case STATE_11:
+					case STATE_12:
+					case STATE_13:
+					case STATE_14:
+					case STATE_15:
+//----------------------------------------------------------------------------------------------------------------------
+		
 					case SETDATA_GridOnCmd:
 					case SETDATA_GridOffCmd:
 					case SETDATA_ModOffCmd:
