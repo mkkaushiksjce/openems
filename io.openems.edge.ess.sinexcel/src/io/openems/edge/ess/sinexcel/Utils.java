@@ -38,22 +38,22 @@ public class Utils {
 				}), Arrays.stream(EssSinexcel.ChannelId.values()).map(channelId -> {
 					switch (channelId) {
 //-------------------------------------------------EVENT BitField32------------------------------------------------------
-					case STATE_0:
-					case STATE_1:
-					case STATE_2:
-					case STATE_3:
-					case STATE_4:
-					case STATE_5:
-					case STATE_6:
-					case STATE_7:
-					case STATE_8:
-					case STATE_9:
-					case STATE_10:
-					case STATE_11:
-					case STATE_12:
-					case STATE_13:
-					case STATE_14:
-					case STATE_15:
+//					case STATE_0:
+//					case STATE_1:
+//					case STATE_2:
+//					case STATE_3:
+//					case STATE_4:
+//					case STATE_5:
+//					case STATE_6:
+//					case STATE_7:
+//					case STATE_8:
+//					case STATE_9:
+//					case STATE_10:
+//					case STATE_11:
+//					case STATE_12:
+//					case STATE_13:
+//					case STATE_14:
+//					case STATE_15:
 //----------------------------------------------------------------------------------------------------------------------
 		
 					case SETDATA_GridOnCmd:
@@ -90,11 +90,18 @@ public class Utils {
 					case Vendor_EVENT_2:
 					case Vendor_EVENT_3:
 					case Vendor_EVENT_4:
+						
+					case Max_Discharge_Current:
+					case Max_Charge_Current:
+					case Analog_DC_Charge_Energy:
+					case Analog_DC_Discharge_Energy:
 						return new IntegerReadChannel(ess, channelId);
 						
 					case Start:
 					case Stop:
 						return new IntegerWriteChannel(ess, channelId);
+					default:
+						break;
 				
 					}
 					return null;
