@@ -89,8 +89,11 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 		SETDATA_GridOnCmd(new Doc().unit(Unit.ON_OFF)),// 
 		SETDATA_GridOffCmd(new Doc().unit(Unit.ON_OFF)),//
 		
-		SET_CHARGE(new Doc().unit(Unit.KILOWATT_HOURS)),
-		SET_DISCHARGE(new Doc().unit(Unit.KILOWATT_HOURS)),
+		SET_CHARGE_DISCHARGE_ACTIVE(new Doc().unit(Unit.KILOWATT_HOURS)),//
+		SET_CHARGE_DISCHARGE_REACTIVE(new Doc().unit(Unit.KILO_VOLT_AMPERE_REACTIVE)),//
+		
+		SET_CHARGE_CURRENT(new Doc().unit(Unit.AMPERE)),
+		SET_DISCHARGE_CURRENT(new Doc().unit(Unit.AMPERE)),
 
 		SOC(new Doc().unit(Unit.PERCENT)),//
 		ACTIVE_POWER(new Doc()//
@@ -135,9 +138,13 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 
 		Vendor_State(new Doc().unit(Unit.NONE)),// 
 		State(new Doc().unit(Unit.NONE)),//
+
+		Analog_DC_Discharge_Energy(new Doc().unit(Unit.KILOWATT_HOURS)),
+		Analog_DC_Charge_Energy(new Doc().unit(Unit.KILOWATT_HOURS)),
 		
-		Analog_DC_Charge_Energy(new Doc() .unit(Unit.KILOWATT_HOURS)),//
-		Analog_DC_Discharge_Energy(new Doc() .unit(Unit.KILOWATT_HOURS)),//
+		Slow_Charging_Voltage(new Doc().unit(Unit.VOLT)),
+		
+		Target_Active_Power(new Doc() .unit(Unit.KILO_WATT)),//
 		Max_Charge_Current(new Doc() .unit(Unit.AMPERE)),
 		Max_Discharge_Current(new Doc() .unit(Unit.AMPERE));
 		
@@ -171,7 +178,7 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 
 		}
 	}
-
+//------------------------------------------START AND STOP-------------------------------------------------
 	public void startSystem() {
 		IntegerWriteChannel SETDATA_GridOnCmd = this.channel(ChannelId.Start);
 		IntegerWriteChannel SETDATA_ModOnCmd = this.channel(ChannelId.Start);
@@ -184,7 +191,7 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 		}
 
 	}
-//------------------------------------------START AND STOP-------------------------------------------------
+
 	public void stopSystem() {
 		IntegerWriteChannel SETDATA_ModOffCmd = this.channel(ChannelId.Stop);
 		IntegerWriteChannel SETDATA_GridOffCmd = this.channel(ChannelId.Stop);
@@ -230,34 +237,59 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 
 	
 //---------------------------------------------------CHARGE AND DISCHARGE-------------------------------------------
-	public void CHARGE() {
-		int Charge_Value = 0;
-		IntegerWriteChannel SET_CHARGE_ENERGY = this.channel(ChannelId.SET_CHARGE);
+	public void SET_CHARGE_DISCHARGE() {
+		int ACTIVE = -20;//ACTIVE < 0 -> CHARGE;	ACTIVE > 0 ->DISCHARGE
+		int REACTIVE = 0;
+		IntegerWriteChannel SET_Active = this.channel(ChannelId.SET_CHARGE_DISCHARGE_ACTIVE);
+		IntegerWriteChannel SET_Reactive = this.channel(ChannelId.SET_CHARGE_DISCHARGE_REACTIVE);
 		try {
-			SET_CHARGE_ENERGY.setNextWriteValue(Charge_Value);
+			SET_Active.setNextWriteValue(ACTIVE);
+			SET_Reactive.setNextWriteValue(REACTIVE);
 			
+
 		} catch (OpenemsException e) {
-			log.error("problem occurred while trying to write charge value" + e.getMessage());
+			log.error("problem occurred while trying to write the charge value" + e.getMessage());
 		}
+
 	}
 	
-	public void doHandling_Charge() {
-		CHARGE();
+	public void doHandling_CHARGE_DISCHARGE() {
+		SET_CHARGE_DISCHARGE();
 	}
+//-----------------------------------------------------MAX CHARGE AND DISCHARGE CURRENT-----------------------------------------------
 	
-	public void DISCHARGE() {
-		int Discharge_Value = 0;
-		IntegerWriteChannel SET_CHARGE_ENERGY = this.channel(ChannelId.SET_DISCHARGE);
+	public void SET_CHARGE_CURRENT() {
+		int SET_CHARGE_CURRENT = 20;
+		IntegerWriteChannel SET = this.channel(ChannelId.SET_CHARGE_CURRENT);
 		try {
-			SET_CHARGE_ENERGY.setNextWriteValue(Discharge_Value);
+			SET.setNextWriteValue(SET_CHARGE_CURRENT);
 			
+
 		} catch (OpenemsException e) {
-			log.error("problem occurred while trying to write discharge value" + e.getMessage());
+			log.error("problem occurred while trying to write the charge current value" + e.getMessage());
 		}
+
 	}
 	
-	public void doHandling_Discharge() {
-		DISCHARGE();
+	public void SET_DISCHARGE_CURRENT() {
+		int SET_DISCHARGE_CURRENT = 0;
+		IntegerWriteChannel SET = this.channel(ChannelId.SET_DISCHARGE_CURRENT);
+		try {
+			SET.setNextWriteValue(SET_DISCHARGE_CURRENT);
+			
+
+		} catch (OpenemsException e) {
+			log.error("problem occurred while trying to write the charge current value" + e.getMessage());
+		}
+
+	}
+	
+	public void doHandling_DISCHARGE_CURRENT() {
+		SET_DISCHARGE_CURRENT();
+	}
+	
+	public void doHandling_CHARGE_CURRENT() {
+		SET_CHARGE_CURRENT();
 	}
 	
 //------------------------------------------------------------------------------------------------------------------	
@@ -270,8 +302,9 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 		switch (event.getTopic()) {
 		case EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE:
 			doHandling_OFF();
-//			doHandling_Charge();
-//			doHandling_Discharge();
+			doHandling_DISCHARGE_CURRENT();
+			doHandling_CHARGE_CURRENT();
+			doHandling_CHARGE_DISCHARGE();
 			break;
 		}
 	}
@@ -295,11 +328,18 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 				new FC6WriteRegisterTask(0x028E, 
 						m(EssSinexcel.ChannelId.Stop, new UnsignedWordElement(0x028E))), // Stop// SETDATA_GridOffCmd
 				
-				new FC6WriteRegisterTask(0x0091, 
-						m(EssSinexcel.ChannelId.SET_CHARGE, new UnsignedWordElement(0x0091))), // 
+				new FC6WriteRegisterTask(0x0087, 
+						m(EssSinexcel.ChannelId.SET_CHARGE_DISCHARGE_ACTIVE, new SignedWordElement(0x0087))), // Target ACTIVE Power //Line65
 				
-				new FC6WriteRegisterTask(0x0093, 
-						m(EssSinexcel.ChannelId.SET_DISCHARGE, new UnsignedWordElement(0x0093))), // 
+				new FC6WriteRegisterTask(0x0088, 
+						m(EssSinexcel.ChannelId.SET_CHARGE_DISCHARGE_REACTIVE, new SignedWordElement(0x0088))), // Target ACTIVE Power //Line65
+				
+				
+				new FC6WriteRegisterTask(0x032B, 
+						m(EssSinexcel.ChannelId.SET_CHARGE_CURRENT, new UnsignedWordElement(0x032B))), // MAX_CHARGING_CURRENT //Line217
+				
+				new FC6WriteRegisterTask(0x032C, 
+						m(EssSinexcel.ChannelId.SET_DISCHARGE_CURRENT, new UnsignedWordElement(0x032C))), // MAX_DISCHARGING_CURRENT //Line218
 																													
 //----------------------------------------------------------READ------------------------------------------------------
 //				new FC3ReadRegistersTask(0x024A, Priority.HIGH, //
@@ -425,11 +465,17 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 //								.build()) //
 				
 //----------------------------------------------------GENERAL SETTINGS--------------------------------------------------------------
+				new FC3ReadRegistersTask(0x0087, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.Target_Active_Power, new UnsignedDoublewordElement(0x0087))), 		// uint 32 // Line72 // Magnification = 0																				
+				
 				new FC3ReadRegistersTask(0x0090, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Analog_DC_Charge_Energy, new UnsignedDoublewordElement(0x0090))), 		// uint 32 // Line72 // Magnification = 0																				
+						m(EssSinexcel.ChannelId.Analog_DC_Charge_Energy, new UnsignedDoublewordElement(0x0090))),
 				
 				new FC3ReadRegistersTask(0x0092, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Analog_DC_Discharge_Energy, new UnsignedDoublewordElement(0x0092))),	// uint 32 // Line73 // Magnification = 0													
+						m(EssSinexcel.ChannelId.Analog_DC_Discharge_Energy, new UnsignedDoublewordElement(0x0092))),
+				
+				new FC3ReadRegistersTask(0x032A, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.Slow_Charging_Voltage, new UnsignedWordElement(0x032A))),				// TESTOBJEKT
 				
 				new FC3ReadRegistersTask(0x032B, Priority.HIGH, //
 						m(EssSinexcel.ChannelId.Max_Charge_Current, new UnsignedWordElement(0x032B))),					// uint 16 // Line217 // Magnifiaction = 10

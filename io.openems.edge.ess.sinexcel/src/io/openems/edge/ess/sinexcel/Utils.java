@@ -9,6 +9,8 @@ import io.openems.edge.common.channel.IntegerReadChannel;
 import io.openems.edge.common.channel.IntegerWriteChannel;
 import io.openems.edge.common.channel.StateCollectorChannel;
 import io.openems.edge.common.channel.doc.ChannelId;
+import io.openems.edge.common.channel.doc.Doc;
+import io.openems.edge.common.channel.doc.Unit;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.ess.api.SymmetricEss;
 
@@ -90,19 +92,23 @@ public class Utils {
 					case Vendor_EVENT_2:
 					case Vendor_EVENT_3:
 					case Vendor_EVENT_4:
-						
+					
+					case Slow_Charging_Voltage:
 					case Max_Discharge_Current:
 					case Max_Charge_Current:
-					case Analog_DC_Charge_Energy:
+					case Target_Active_Power:
 					case Analog_DC_Discharge_Energy:
+					case Analog_DC_Charge_Energy:
 						return new IntegerReadChannel(ess, channelId);
 						
 					case Start:
 					case Stop:
+					case SET_CHARGE_DISCHARGE_ACTIVE:
+					case SET_CHARGE_DISCHARGE_REACTIVE:
+					case SET_CHARGE_CURRENT:
+					case SET_DISCHARGE_CURRENT:
+					
 						return new IntegerWriteChannel(ess, channelId);
-					default:
-						break;
-				
 					}
 					return null;
 				}) //
