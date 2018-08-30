@@ -22,16 +22,12 @@ import io.openems.common.types.OpenemsType;
 import io.openems.edge.bridge.modbus.api.AbstractOpenemsModbusComponent;
 import io.openems.edge.bridge.modbus.api.BridgeModbus;
 import io.openems.edge.bridge.modbus.api.ModbusProtocol;
-import io.openems.edge.bridge.modbus.api.element.SignedDoublewordElement;
 import io.openems.edge.bridge.modbus.api.element.SignedWordElement;
 import io.openems.edge.bridge.modbus.api.element.UnsignedDoublewordElement;
 import io.openems.edge.bridge.modbus.api.element.UnsignedWordElement;
-import io.openems.edge.bridge.modbus.api.task.FC16WriteRegistersTask;
 import io.openems.edge.bridge.modbus.api.task.FC3ReadRegistersTask;
 import io.openems.edge.bridge.modbus.api.task.FC6WriteRegisterTask;
-import io.openems.edge.common.channel.BooleanReadChannel;
 import io.openems.edge.common.channel.IntegerWriteChannel;
-import io.openems.edge.common.channel.LongWriteChannel;
 import io.openems.edge.common.channel.doc.Doc;
 import io.openems.edge.common.channel.doc.Level;
 import io.openems.edge.common.channel.doc.OptionsEnum;
@@ -98,26 +94,21 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 		SET_CHARGE_CURRENT(new Doc().unit(Unit.AMPERE)),
 		SET_DISCHARGE_CURRENT(new Doc().unit(Unit.AMPERE)),
 		
+		SET_SLOW_CHARGE_VOLTAGE(new Doc().unit(Unit.VOLT)),
+		SET_FLOAT_CHARGE_VOLTAGE(new Doc().unit(Unit.VOLT)),
+		
 		SET_UPPER_VOLTAGE(new Doc().unit(Unit.VOLT)),
 		SET_LOWER_VOLTAGE(new Doc().unit(Unit.VOLT)),
 
-		SOC(new Doc().unit(Unit.PERCENT)),//
-		ACTIVE_POWER(new Doc()//
-				.type(OpenemsType.INTEGER)//
-				.unit(Unit.WATT)//
-				.text(POWER_DOC_TEXT)),//
-		REACTIVE_POWER(new Doc()//
-				.type(OpenemsType.INTEGER)//
-				.unit(Unit.VOLT_AMPERE_REACTIVE)//
-				.text(POWER_DOC_TEXT)),//
 		
-		Analog_Active_Power_3Phase(new Doc().unit(Unit.KILO_WATT)),//
-		Analog_Reactive_Power_3Phase(new Doc().unit(Unit.KILO_VOLT_AMPERE_REACTIVE)),//
+
 		
-		Frequency(new Doc().unit(Unit.HERTZ)),//
+	
+		
+		Frequency(new Doc().unit(Unit.HERTZ).text("/100")),//
 		Temperature(new Doc().unit(Unit.DEGREE_CELSIUS)),//
 		
-		Analog_DC_Current(new Doc().unit(Unit.AMPERE)),//
+		
 		AC_Apparent_Power(new Doc().unit(Unit.VOLT_AMPERE)),//
 		AC_Reactive_Power(new Doc().unit(Unit.VOLT_AMPERE_REACTIVE)),//
 		AC_Power(new Doc().unit(Unit.WATT)),// 
@@ -125,41 +116,39 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 		InvOutVolt_L1(new Doc() .unit(Unit.VOLT)),//
 		InvOutVolt_L2(new Doc() .unit(Unit.VOLT)),//
 		InvOutVolt_L3(new Doc().unit(Unit.VOLT)),//
-		InvOutCurrent_L1(new Doc().unit(Unit.AMPERE)),//
-		InvOutCurrent_L2(new Doc() .unit(Unit.AMPERE)),//
-		InvOutCurrent_L3(new Doc().unit(Unit.AMPERE)),//
+		InvOutCurrent_L1(new Doc().unit(Unit.AMPERE).text("/10")),//
+		InvOutCurrent_L2(new Doc() .unit(Unit.AMPERE).text("/10")),//
+		InvOutCurrent_L3(new Doc().unit(Unit.AMPERE).text("/10")),//
 
-		DC_Power(new Doc().unit(Unit.KILO_WATT)),//
-		DC_Current(new Doc().unit(Unit.AMPERE)),//
-//		DC_Current_2(new Doc().unit(Unit.AMPERE)),//
-		DC_Voltage(new Doc().unit(Unit.NEW_VOLT)),//
-		Analog_DC_Power(new Doc().unit(Unit.WATT).text(POWER_DOC_TEXT)),//
+		DC_Power(new Doc().unit(Unit.KILO_WATT).text("/100")),//
+		DC_Current(new Doc().unit(Unit.AMPERE).text("/10")),//
+		DC_Voltage(new Doc().unit(Unit.VOLT).text("/10")),//
+
 
 		EVENT_1(new Doc().unit(Unit.NONE)),//
-		EVENT_2(new Doc().unit(Unit.NONE)),//
-		Vendor_EVENT_1(new Doc().unit(Unit.NONE)), //
-		Vendor_EVENT_2(new Doc().unit(Unit.NONE)),//
-		Vendor_EVENT_3(new Doc().unit(Unit.NONE)),// 
-		Vendor_EVENT_4(new Doc().unit(Unit.NONE)),//
-
-		Vendor_State(new Doc().unit(Unit.NONE)),// 
 		Sinexcel_State(new Doc().unit(Unit.NONE)),//
-
-		Analog_DC_Discharge_Energy(new Doc().unit(Unit.KILOWATT_HOURS)),
-		Analog_DC_Charge_Energy(new Doc().unit(Unit.KILOWATT_HOURS)),
 		
 		Test_Register(new Doc().unit(Unit.NONE)),
 		
-		Target_Active_Power(new Doc() .unit(Unit.KILO_WATT)),//
-		Max_Charge_Current(new Doc() .unit(Unit.AMPERE)),
-		Max_Discharge_Current(new Doc() .unit(Unit.AMPERE)),
-		
-		
+		Target_Active_Power(new Doc() .unit(Unit.KILO_WATT).text("/10")),//
+		Target_Reactive_Power(new Doc().unit(Unit.KILO_WATT).text("/10")),//
+		Max_Charge_Current(new Doc() .unit(Unit.AMPERE).text("/10")),
+		Max_Discharge_Current(new Doc() .unit(Unit.AMPERE).text("/10")),
+//---------------------------------------STATES------------------------------------------------		
+		Sinexcel_STATE_1(new Doc().level(Level.INFO).text("OFF")),//
+		Sinexcel_STATE_2(new Doc().level(Level.INFO).text("Sleeping")),//
+		Sinexcel_STATE_3(new Doc().level(Level.INFO).text("Starting")),//
+		Sinexcel_STATE_4(new Doc().level(Level.INFO).text("MPPT")),//
+		Sinexcel_STATE_5(new Doc().level(Level.INFO).text("Throttled")),//
+		Sinexcel_STATE_6(new Doc().level(Level.INFO).text("Shutting down")),//
+		Sinexcel_STATE_7(new Doc().level(Level.INFO).text("Fault")),//
+		Sinexcel_STATE_8(new Doc().level(Level.INFO).text("Standby")),//
+		Sinexcel_STATE_9(new Doc().level(Level.INFO).text("Started")),//
 		
 //-----------------------------------EVENT Bitfield 32-----------------------------------
 		STATE_0(new Doc().level(Level.FAULT).text("Ground fault")),//
 		STATE_1(new Doc().level(Level.WARNING).text("DC over Voltage")),//
-		STATE_2(new Doc().level(Level.WARNING).text("AC Disconnect open")),//
+		STATE_2(new Doc().level(Level.WARNING).text("AC disconnect open")),//
 		STATE_3(new Doc().level(Level.WARNING).text("DC disconnect open")),//
 		STATE_4(new Doc().level(Level.WARNING).text("Grid shutdown")),//
 		STATE_5(new Doc().level(Level.WARNING).text("Cabinet open")),//
@@ -265,51 +254,42 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 	}
 //-----------------------------------------------------MAX CHARGE AND DISCHARGE CURRENT-----------------------------------------------
 	
-	public void SET_CHARGE_CURRENT() {
+	public void SET_CHARGE_DISCHARGE_CURRENT() {
 		
-		IntegerWriteChannel SET = this.channel(ChannelId.SET_CHARGE_CURRENT);
+		IntegerWriteChannel SET_DISCHARGE_CURRENT = this.channel(ChannelId.SET_DISCHARGE_CURRENT);
+		IntegerWriteChannel SET_CHARGE_CURRENT = this.channel(ChannelId.SET_CHARGE_CURRENT);
 		try {
-			SET.setNextWriteValue(SET_CHARGE_CURRENT*10);
+			SET_DISCHARGE_CURRENT.setNextWriteValue(DISCHARGE_CURRENT*10);
+			SET_CHARGE_CURRENT.setNextWriteValue(CHARGE_CURRENT*10);
 			
 
 		} catch (OpenemsException e) {
-			log.error("problem occurred while trying to write the charge current value" + e.getMessage());
+			log.error("problem occurred while trying to write the charge and discharge current value" + e.getMessage());
 		}
 
 	}
 	
-	public void SET_DISCHARGE_CURRENT() {
-		
-		IntegerWriteChannel SET = this.channel(ChannelId.SET_DISCHARGE_CURRENT);
-		try {
-			SET.setNextWriteValue(SET_DISCHARGE_CURRENT*10);
-			
-
-		} catch (OpenemsException e) {
-			log.error("problem occurred while trying to write the charge current value" + e.getMessage());
-		}
-
+	public void doHandling_CHARGE_DISCHARGE_CURRENT() {
+		SET_CHARGE_DISCHARGE_CURRENT();
 	}
 	
-	public void doHandling_DISCHARGE_CURRENT() {
-		SET_DISCHARGE_CURRENT();
-	}
 	
-	public void doHandling_CHARGE_CURRENT() {
-		SET_CHARGE_CURRENT();
-	}
 //---------------------------------------------SET UPPER/LOWER BATTERY VOLTAGE--------------------------------------------	
 public void SET_UPPER_LOWER_BATTERY_VOLTAGE() {
 		
 		IntegerWriteChannel SET_LOWER_VOLTAGE = this.channel(ChannelId.SET_LOWER_VOLTAGE);
 		IntegerWriteChannel SET_UPPER_VOLTAGE = this.channel(ChannelId.SET_UPPER_VOLTAGE);
+		IntegerWriteChannel SET_SLOW_CHARGE_VOLTAGE = this.channel(ChannelId.SET_SLOW_CHARGE_VOLTAGE);
+		IntegerWriteChannel SET_FLOAT_CHARGE_VOLTAGE = this.channel(ChannelId.SET_FLOAT_CHARGE_VOLTAGE);
 		try {
-			SET_UPPER_VOLTAGE.setNextWriteValue(SET_UPPER_BAT_VOLTAGE);
-			SET_LOWER_VOLTAGE.setNextWriteValue(SET_LOWER_BAT_VOLTAGE);
+			SET_UPPER_VOLTAGE.setNextWriteValue(UPPER_BAT_VOLTAGE*10);
+			SET_LOWER_VOLTAGE.setNextWriteValue(LOWER_BAT_VOLTAGE*10);
+			SET_SLOW_CHARGE_VOLTAGE.setNextWriteValue(SLOW_CHARGE_VOLTAGE*10);
+			SET_FLOAT_CHARGE_VOLTAGE.setNextWriteValue(FLOAT_CHARGE_VOLTAGE*10);
 			
 
 		} catch (OpenemsException e) {
-			log.error("problem occurred while trying to write the charge value" + e.getMessage());
+			log.error("problem occurred while trying to write the voltage limits" + e.getMessage());
 		}
 
 	}
@@ -338,20 +318,21 @@ public void SET_UPPER_LOWER_BATTERY_VOLTAGE() {
 				
 				new FC6WriteRegisterTask(0x0087, 
 						m(EssSinexcel.ChannelId.SET_CHARGE_DISCHARGE_ACTIVE, new SignedWordElement(0x0087))), // Target ACTIVE Power //Line65
-				
 				new FC6WriteRegisterTask(0x0088, 
 						m(EssSinexcel.ChannelId.SET_CHARGE_DISCHARGE_REACTIVE, new SignedWordElement(0x0088))), // Target ACTIVE Power //Line65
 				
-				
 				new FC6WriteRegisterTask(0x032B, 
 						m(EssSinexcel.ChannelId.SET_CHARGE_CURRENT, new UnsignedWordElement(0x032B))), // MAX_CHARGING_CURRENT //Line217
-				
 				new FC6WriteRegisterTask(0x032C, 
 						m(EssSinexcel.ChannelId.SET_DISCHARGE_CURRENT, new UnsignedWordElement(0x032C))), // MAX_DISCHARGING_CURRENT //Line218
 				
+				new FC6WriteRegisterTask(0x0329, 
+						m(EssSinexcel.ChannelId.SET_SLOW_CHARGE_VOLTAGE, new UnsignedWordElement(0x0329))), // Slow charge Voltage // Line215 
+				new FC6WriteRegisterTask(0x0328, 
+						m(EssSinexcel.ChannelId.SET_FLOAT_CHARGE_VOLTAGE, new UnsignedWordElement(0x0328))),
+				
 				new FC6WriteRegisterTask(0x032E, 
 						m(EssSinexcel.ChannelId.SET_UPPER_VOLTAGE, new UnsignedWordElement(0x032E))), // Upper voltage limit of battery protection //Line220
-				
 				new FC6WriteRegisterTask(0x032D, 
 						m(EssSinexcel.ChannelId.SET_LOWER_VOLTAGE, new UnsignedWordElement(0x032D))), // LOWER voltage limit of battery protection //Line219
 																													
@@ -362,20 +343,12 @@ public void SET_UPPER_LOWER_BATTERY_VOLTAGE() {
 //				new FC3ReadRegistersTask(0x0084, Priority.HIGH, //
 //						m(EssSinexcel.ChannelId.Temperature, new SignedWordElement(0x0084))), 					// int16 // Line 62	Magnification = 0
 			
-				new FC3ReadRegistersTask(0x00B8, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.SOC, new UnsignedWordElement(0x00B8))), // uint16 // Line91 // Magnification = 10
+
 				
 				new FC3ReadRegistersTask(0x0260, Priority.HIGH,
 						m(EssSinexcel.ChannelId.Sinexcel_State, new UnsignedWordElement(0x0260))),
 				
-//				new FC3ReadRegistersTask(0x0261, Priority.HIGH, 
-//				m(EssSinexcel.ChannelId.Vendor_State, new UnsignedWordElement(0x0261))),
-				
-//				new FC3ReadRegistersTask(0x007A, Priority.HIGH, //
-//				m(EssSinexcel.ChannelId.Analog_Active_Power_3Phase, new SignedWordElement(0x007A))), 	// KiloWatt //int16 // Line55
-//		
-//		new FC3ReadRegistersTask(0x007B, Priority.HIGH, //
-//				m(EssSinexcel.ChannelId.Analog_Reactive_Power_3Phase, new SignedWordElement(0x007B))), 	//KiloVAR // int16 // Line56
+
 				
 //----------------------------------------------------------START and STOP--------------------------------------------------------------------				
 				new FC3ReadRegistersTask(0x023A, Priority.LOW, //
@@ -394,41 +367,15 @@ public void SET_UPPER_LOWER_BATTERY_VOLTAGE() {
 						m(EssSinexcel.ChannelId.SETDATA_GridOffCmd, new UnsignedWordElement(0x028E))),
 				
 
-							
-//-----------------------------------------EVENT TESTING-------------------------------------------------------------
-//				new FC3ReadRegistersTask(0x0262, Priority.HIGH, 
-//						m(EssSinexcel.ChannelId.EVENT_1, new SignedDoublewordElement(0x0262))),
-
-//				new FC3ReadRegistersTask(0x0264, Priority.HIGH, 
-//						m(EssSinexcel.ChannelId.EVENT_2, new SignedDoublewordElement(0x0264))),
-//				
-//				new FC3ReadRegistersTask(0x0266, Priority.HIGH, 
-//						m(EssSinexcel.ChannelId.Vendor_EVENT_1, new SignedDoublewordElement(0x0266))),
-//				
-//				new FC3ReadRegistersTask(0x0268, Priority.HIGH, 
-//						m(EssSinexcel.ChannelId.Vendor_EVENT_2, new SignedDoublewordElement(0x0268))),
-//				
-//				new FC3ReadRegistersTask(0x026A, Priority.HIGH, 
-//						m(EssSinexcel.ChannelId.Vendor_EVENT_3, new SignedDoublewordElement(0x026A))),
-//				
-//				new FC3ReadRegistersTask(0x026C, Priority.HIGH, 
-//						m(EssSinexcel.ChannelId.Vendor_EVENT_4, new SignedDoublewordElement(0x026C))),
-
 //-----------------------------------------DC Parameter-----------------------------------------------------------------
 				new FC3ReadRegistersTask(0x008D, Priority.HIGH,
 						m(EssSinexcel.ChannelId.DC_Power, new SignedWordElement(0x008D))),				// Magnification = 100
 				
 				new FC3ReadRegistersTask(0x0255, Priority.HIGH,
-						m(EssSinexcel.ChannelId.DC_Current, new UnsignedWordElement(0x0255))),
-				
-//				new FC3ReadRegistersTask(0xF002, Priority.HIGH,
-//						m(EssSinexcel.ChannelId.DC_Current_2, new UnsignedWordElement(0xF002))),			// uint 16 // Line77 // Magnification = ?
+						m(EssSinexcel.ChannelId.DC_Current, new SignedWordElement(0x0255))),			// ImplementiereungsTabelle: uint 16
 				
 				new FC3ReadRegistersTask(0x0257, Priority.HIGH, //
 						m(EssSinexcel.ChannelId.DC_Voltage, new UnsignedWordElement(0x0257))), 			// NennSpannung // uint16 // Line144 // Magnification = 100
-				
-//				new FC3ReadRegistersTask(0x008D, Priority.HIGH, //
-//				m(EssSinexcel.ChannelId.Analog_DC_Power, new SignedWordElement(0x008D))), 				// int16 // Line69 // Magnification = 100
 				
 //-----------------------------------------AC Parameter-----------------------------------------------------------------
 //				new FC3ReadRegistersTask(0x0065, Priority.HIGH, //
@@ -445,17 +392,15 @@ public void SET_UPPER_LOWER_BATTERY_VOLTAGE() {
 				new FC3ReadRegistersTask(0x006A, Priority.HIGH, //
 						m(EssSinexcel.ChannelId.InvOutCurrent_L3, new UnsignedWordElement(0x006A))),			// uint16 // Line41// Magnification= 10
 				
-//				new FC3ReadRegistersTask(0x0248, Priority.HIGH, //
-//				m(EssSinexcel.ChannelId.AC_Power, new SignedWordElement(0x0248))), 						//	int16 // Line130 // Magnification = 0
+				new FC3ReadRegistersTask(0x0248, Priority.HIGH, //
+				m(EssSinexcel.ChannelId.AC_Power, new SignedWordElement(0x0248))), 						//	int16 // Line130 // Magnification = 0
 				
 //				new FC3ReadRegistersTask(0x024C, Priority.HIGH, //
 //				m(EssSinexcel.ChannelId.AC_Apparent_Power, new SignedWordElement(0x024C))), 			//	int16 // Line134 // Magnification = 0//
-
-				//		new FC3ReadRegistersTask(0x024E, Priority.HIGH, //
+//
+//						new FC3ReadRegistersTask(0x024E, Priority.HIGH, //
 //				m(EssSinexcel.ChannelId.AC_Reactive_Power, new SignedWordElement(0x024E))), 			// int16 // Line136 // Magnification = 0
 
-//				new FC3ReadRegistersTask(0x008F, Priority.HIGH, //
-//				m(EssSinexcel.ChannelId.Analog_DC_Current, new UnsignedWordElement(0x008F))),					// uint64 // Line95
 
 //-----------------------------------------EVENT Bitfield 32------------------------------------------------------------		
 				new FC3ReadRegistersTask(0x0262, Priority.LOW, //
@@ -477,37 +422,50 @@ public void SET_UPPER_LOWER_BATTERY_VOLTAGE() {
 								.m(EssSinexcel.ChannelId.STATE_14, 14) //
 								.m(EssSinexcel.ChannelId.STATE_15, 15) //
 								.build()), //
-				
+//---------------------------------------------STATES---------------------------------------------------------
+				new FC3ReadRegistersTask(0x0260, Priority.LOW, //
+						bm(new UnsignedWordElement(0x0260)) //
+								 
+								.m(EssSinexcel.ChannelId.Sinexcel_STATE_1, 1) //
+								.m(EssSinexcel.ChannelId.Sinexcel_STATE_2, 2) //
+								.m(EssSinexcel.ChannelId.Sinexcel_STATE_3, 3) //
+								.m(EssSinexcel.ChannelId.Sinexcel_STATE_4, 4) //
+								.m(EssSinexcel.ChannelId.Sinexcel_STATE_5, 5) //
+								.m(EssSinexcel.ChannelId.Sinexcel_STATE_6, 6) //
+								.m(EssSinexcel.ChannelId.Sinexcel_STATE_7, 7) //
+								.m(EssSinexcel.ChannelId.Sinexcel_STATE_8, 8) //
+								.m(EssSinexcel.ChannelId.Sinexcel_STATE_9, 9) //
+								.build()), //
 //----------------------------------------------------GENERAL SETTINGS--------------------------------------------------------------
-				new FC3ReadRegistersTask(0x0087, Priority.HIGH, //
+				new FC3ReadRegistersTask(0x0087, Priority.LOW, //
 						m(EssSinexcel.ChannelId.Target_Active_Power, new SignedWordElement(0x0087))), 		// int 16 // Line65 // Magnification = 0																				
+				new FC3ReadRegistersTask(0x0088, Priority.LOW, //
+						m(EssSinexcel.ChannelId.Target_Reactive_Power, new SignedWordElement(0x0088))),
 				
-				new FC3ReadRegistersTask(0x0090, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Analog_DC_Charge_Energy, new UnsignedDoublewordElement(0x0090))),
+				new FC3ReadRegistersTask(0x032C, Priority.LOW, //
+						m(EssSinexcel.ChannelId.Max_Discharge_Current, new UnsignedWordElement(0x032C))),	// uint 16 // Line217 // Magnifiaction = 10
 				
-				new FC3ReadRegistersTask(0x0092, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Analog_DC_Discharge_Energy, new UnsignedDoublewordElement(0x0092))),
+				new FC3ReadRegistersTask(0x032B, Priority.LOW, //
+						m(EssSinexcel.ChannelId.Max_Charge_Current, new UnsignedWordElement(0x032B)))					// uint 16 // Line217 // Magnifiaction = 10
 				
-				new FC3ReadRegistersTask(0x032E, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Test_Register, new UnsignedWordElement(0x032E))),				// TESTOBJEKT
-				
-				new FC3ReadRegistersTask(0x032B, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Max_Charge_Current, new UnsignedWordElement(0x032B))),					// uint 16 // Line217 // Magnifiaction = 10
-				
-				new FC3ReadRegistersTask(0x032C, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Max_Discharge_Current, new UnsignedWordElement(0x032C)))				// uint 16 // Line217 // Magnifiaction = 10
-				
+								
+//				new FC3ReadRegistersTask(0x032E, Priority.HIGH, //
+//						m(EssSinexcel.ChannelId.Test_Register, new UnsignedWordElement(0x032E)))				// TESTOBJEKT
 		);
 	
 
 	}
 	
-	int SET_LOWER_BAT_VOLTAGE = 3000;
-	int SET_UPPER_BAT_VOLTAGE = 3900;
-	int SET_CHARGE_CURRENT = 20;
-	int SET_DISCHARGE_CURRENT = 0;
-	int ACTIVE = -10;		//ACTIVE < 0 -> CHARGE;	ACTIVE > 0 ->DISCHARGE
-	int REACTIVE = 0;
+	int SLOW_CHARGE_VOLTAGE = 375;		// -> From that Value starts the slow charging
+	int FLOAT_CHARGE_VOLTAGE = 320;		// -> From that Value starts the float (fast) charging
+	
+	int LOWER_BAT_VOLTAGE = 300;
+	int UPPER_BAT_VOLTAGE = 390;
+	
+	int CHARGE_CURRENT = 30;			// [CHARGE_CURRENT] = A // Range = 0 A ... 90 A
+	int DISCHARGE_CURRENT = 0;			// [DISCHARGE_CURRENT] = A	// Range = 0 A ... 90 A
+	int ACTIVE = -5;					// [ACTIVE] = kW	// Range = -30 kW ... 30 kW	// ACTIVE < 0 -> CHARGE //	ACTIVE > 0 ->DISCHARGE 
+	int REACTIVE = 0;					// [REACTIVE] = kVAr	// Range = -30 kW ... 30 //REACTIVE < 0 -> inductive // REACTIVE > 0 -> capacitive //  kW
 	
 	@Override
 	public void handleEvent(Event event) {
@@ -516,10 +474,9 @@ public void SET_UPPER_LOWER_BATTERY_VOLTAGE() {
 		}
 		switch (event.getTopic()) {
 		case EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE:
-//			doHandling_OFF();
+			doHandling_ON();
 			doHandling_UPPER_LOWER_VOLTAGE();
-//			doHandling_DISCHARGE_CURRENT();
-//			doHandling_CHARGE_CURRENT();
+//			doHandling_CHARGE_DISCHARGE_CURRENT();
 //			doHandling_CHARGE_DISCHARGE();
 			break;
 		}

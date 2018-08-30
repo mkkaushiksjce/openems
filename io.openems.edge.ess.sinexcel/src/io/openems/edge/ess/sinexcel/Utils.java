@@ -40,7 +40,6 @@ public class Utils {
 					return null;
 				}), Arrays.stream(EssSinexcel.ChannelId.values()).map(channelId -> {
 					switch (channelId) {
-//-------------------------------------------------EVENT BitField32------------------------------------------------------
 					
 //----------------------------------------------------------------------------------------------------------------------
 		
@@ -49,13 +48,7 @@ public class Utils {
 					case SETDATA_ModOffCmd:
 					case SETDATA_ModOnCmd:
 					case SUNSPEC_DID_0103:
-					case SOC:
-					case Analog_DC_Power:
 					case DC_Voltage:
-					case ACTIVE_POWER:
-					case REACTIVE_POWER:
-					case Analog_Active_Power_3Phase:
-					case Analog_Reactive_Power_3Phase:
 					case AC_Power:
 					case AC_Apparent_Power:
 					case AC_Reactive_Power:	
@@ -68,36 +61,45 @@ public class Utils {
 					case InvOutCurrent_L2:
 					case InvOutCurrent_L3:
 					case DC_Current:
-//					case DC_Current_2:
+
 					case DC_Power:
-					case Analog_DC_Current:
-					case Vendor_State:
+					
+					
 					case Sinexcel_State:
 					case EVENT_1:
-					case EVENT_2:
-					case Vendor_EVENT_1:
-					case Vendor_EVENT_2:
-					case Vendor_EVENT_3:
-					case Vendor_EVENT_4:
 					
+				
 					case Test_Register:
 					case Max_Discharge_Current:
 					case Max_Charge_Current:
 					case Target_Active_Power:
-					case Analog_DC_Discharge_Energy:
-					case Analog_DC_Charge_Energy:
+					case Target_Reactive_Power:
+
+		
 						return new IntegerReadChannel(ess, channelId);
-						
 					case Start:
 					case Stop:
 					case SET_CHARGE_DISCHARGE_ACTIVE:
 					case SET_CHARGE_DISCHARGE_REACTIVE:
 					case SET_CHARGE_CURRENT:
 					case SET_DISCHARGE_CURRENT:
+					case SET_SLOW_CHARGE_VOLTAGE:
+					case SET_FLOAT_CHARGE_VOLTAGE:
 					case SET_UPPER_VOLTAGE:
 					case SET_LOWER_VOLTAGE:
 						return new IntegerWriteChannel(ess, channelId);
-						
+//-----------------------------------STATES--------------------------------------------------
+					case Sinexcel_STATE_1:
+					case Sinexcel_STATE_2:
+					case Sinexcel_STATE_3:
+					case Sinexcel_STATE_4:
+					case Sinexcel_STATE_5:
+					case Sinexcel_STATE_6:
+					case Sinexcel_STATE_7:
+					case Sinexcel_STATE_8:
+					case Sinexcel_STATE_9:	
+						return new StateChannel(ess, channelId);
+//-----------------------------------EVENT BITFIELD32-----------------------------------------						
 					case STATE_0:
 					case STATE_1:
 					case STATE_2:
