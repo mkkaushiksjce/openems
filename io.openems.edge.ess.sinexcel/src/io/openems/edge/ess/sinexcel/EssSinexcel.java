@@ -239,8 +239,8 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 		IntegerWriteChannel SET_Active = this.channel(ChannelId.SET_CHARGE_DISCHARGE_ACTIVE);
 		IntegerWriteChannel SET_Reactive = this.channel(ChannelId.SET_CHARGE_DISCHARGE_REACTIVE);
 		try {
-			SET_Active.setNextWriteValue(ACTIVE*10);
-			SET_Reactive.setNextWriteValue(REACTIVE*10);
+			SET_Active.setNextWriteValue(ACTIVE);
+			SET_Reactive.setNextWriteValue(REACTIVE);
 			
 
 		} catch (OpenemsException e) {
@@ -259,8 +259,8 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 		IntegerWriteChannel SET_DISCHARGE_CURRENT = this.channel(ChannelId.SET_DISCHARGE_CURRENT);
 		IntegerWriteChannel SET_CHARGE_CURRENT = this.channel(ChannelId.SET_CHARGE_CURRENT);
 		try {
-			SET_DISCHARGE_CURRENT.setNextWriteValue(DISCHARGE_CURRENT*10);
-			SET_CHARGE_CURRENT.setNextWriteValue(CHARGE_CURRENT*10);
+			SET_DISCHARGE_CURRENT.setNextWriteValue(DISCHARGE_CURRENT);
+			SET_CHARGE_CURRENT.setNextWriteValue(CHARGE_CURRENT);
 			
 
 		} catch (OpenemsException e) {
@@ -282,10 +282,10 @@ public void SET_UPPER_LOWER_BATTERY_VOLTAGE() {
 		IntegerWriteChannel SET_SLOW_CHARGE_VOLTAGE = this.channel(ChannelId.SET_SLOW_CHARGE_VOLTAGE);
 		IntegerWriteChannel SET_FLOAT_CHARGE_VOLTAGE = this.channel(ChannelId.SET_FLOAT_CHARGE_VOLTAGE);
 		try {
-			SET_UPPER_VOLTAGE.setNextWriteValue(UPPER_BAT_VOLTAGE*10);
-			SET_LOWER_VOLTAGE.setNextWriteValue(LOWER_BAT_VOLTAGE*10);
-			SET_SLOW_CHARGE_VOLTAGE.setNextWriteValue(SLOW_CHARGE_VOLTAGE*10);
-			SET_FLOAT_CHARGE_VOLTAGE.setNextWriteValue(FLOAT_CHARGE_VOLTAGE*10);
+			SET_UPPER_VOLTAGE.setNextWriteValue(UPPER_BAT_VOLTAGE);
+			SET_LOWER_VOLTAGE.setNextWriteValue(LOWER_BAT_VOLTAGE);
+			SET_SLOW_CHARGE_VOLTAGE.setNextWriteValue(SLOW_CHARGE_VOLTAGE);
+			SET_FLOAT_CHARGE_VOLTAGE.setNextWriteValue(FLOAT_CHARGE_VOLTAGE);
 			
 
 		} catch (OpenemsException e) {
@@ -446,26 +446,28 @@ public void SET_UPPER_LOWER_BATTERY_VOLTAGE() {
 						m(EssSinexcel.ChannelId.Max_Discharge_Current, new UnsignedWordElement(0x032C))),	// uint 16 // Line217 // Magnifiaction = 10
 				
 				new FC3ReadRegistersTask(0x032B, Priority.LOW, //
-						m(EssSinexcel.ChannelId.Max_Charge_Current, new UnsignedWordElement(0x032B))),					// uint 16 // Line217 // Magnifiaction = 10
+						m(EssSinexcel.ChannelId.Max_Charge_Current, new UnsignedWordElement(0x032B)))					// uint 16 // Line217 // Magnifiaction = 10
 				
-								
-				new FC3ReadRegistersTask(0x032D, Priority.HIGH, //
-						m(EssSinexcel.ChannelId.Test_Register, new UnsignedWordElement(0x032D)))				// TESTOBJEKT
+//				new FC3ReadRegistersTask(0x032D, Priority.HIGH, //
+//						m(EssSinexcel.ChannelId.Test_Register, new UnsignedWordElement(0x032D)))				// TESTOBJEKT
 		);
 	
 
 	}
+//------------------------------------------------------------------------------------------------------------------------
+/*
+ * Example: Value 3000 means 300; Value 3001 means 300,1
+ */
+	int SLOW_CHARGE_VOLTAGE = 3500;		// Slow and Float Charge Voltage must be the same for the Lithium Ion battery. 
+	int FLOAT_CHARGE_VOLTAGE = 3500;		
 	
-	int SLOW_CHARGE_VOLTAGE = 350;		// -> From that Value starts the slow charging
-	int FLOAT_CHARGE_VOLTAGE = 350;		// -> From that Value starts the float (fast) charging
+	int LOWER_BAT_VOLTAGE = 3000;
+	int UPPER_BAT_VOLTAGE = 3900;
 	
-	int LOWER_BAT_VOLTAGE = 300;
-	int UPPER_BAT_VOLTAGE = 390;
-	
-	int CHARGE_CURRENT = 30;			// [CHARGE_CURRENT] = A // Range = 0 A ... 90 A
-	int DISCHARGE_CURRENT = 30;			// [DISCHARGE_CURRENT] = A	// Range = 0 A ... 90 A
-	int ACTIVE = 5;					// [ACTIVE] = kW	// Range = -30 kW ... 30 kW	// ACTIVE < 0 -> CHARGE //	ACTIVE > 0 ->DISCHARGE 
-	int REACTIVE = 0;					// [REACTIVE] = kVAr	// Range = -30 kW ... 30 //REACTIVE < 0 -> inductive // REACTIVE > 0 -> capacitive //  kW
+	int CHARGE_CURRENT = 300;			// [CHARGE_CURRENT] = A // Range = 0 A ... 90 A
+	int DISCHARGE_CURRENT = 300;			// [DISCHARGE_CURRENT] = A	// Range = 0 A ... 90 A
+	int ACTIVE = 50;					// [ACTIVE] = kW	// Range = -30 kW ... 30 kW	// ACTIVE < 0 -> CHARGE //	ACTIVE > 0 ->DISCHARGE 
+	int REACTIVE = 0;					// [REACTIVE] = kVAr	// Range = -30 kW ... 30 //REACTIVE < 0 -> inductive // REACTIVE > 0 -> capacitive 
 	
 	@Override
 	public void handleEvent(Event event) {
