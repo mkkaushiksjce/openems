@@ -446,25 +446,25 @@ public void SET_UPPER_LOWER_BATTERY_VOLTAGE() {
 						m(EssSinexcel.ChannelId.Max_Discharge_Current, new UnsignedWordElement(0x032C))),	// uint 16 // Line217 // Magnifiaction = 10
 				
 				new FC3ReadRegistersTask(0x032B, Priority.LOW, //
-						m(EssSinexcel.ChannelId.Max_Charge_Current, new UnsignedWordElement(0x032B)))					// uint 16 // Line217 // Magnifiaction = 10
+						m(EssSinexcel.ChannelId.Max_Charge_Current, new UnsignedWordElement(0x032B))),					// uint 16 // Line217 // Magnifiaction = 10
 				
 								
-//				new FC3ReadRegistersTask(0x032E, Priority.HIGH, //
-//						m(EssSinexcel.ChannelId.Test_Register, new UnsignedWordElement(0x032E)))				// TESTOBJEKT
+				new FC3ReadRegistersTask(0x032D, Priority.HIGH, //
+						m(EssSinexcel.ChannelId.Test_Register, new UnsignedWordElement(0x032D)))				// TESTOBJEKT
 		);
 	
 
 	}
 	
-	int SLOW_CHARGE_VOLTAGE = 375;		// -> From that Value starts the slow charging
-	int FLOAT_CHARGE_VOLTAGE = 320;		// -> From that Value starts the float (fast) charging
+	int SLOW_CHARGE_VOLTAGE = 350;		// -> From that Value starts the slow charging
+	int FLOAT_CHARGE_VOLTAGE = 350;		// -> From that Value starts the float (fast) charging
 	
 	int LOWER_BAT_VOLTAGE = 300;
 	int UPPER_BAT_VOLTAGE = 390;
 	
 	int CHARGE_CURRENT = 30;			// [CHARGE_CURRENT] = A // Range = 0 A ... 90 A
-	int DISCHARGE_CURRENT = 0;			// [DISCHARGE_CURRENT] = A	// Range = 0 A ... 90 A
-	int ACTIVE = -5;					// [ACTIVE] = kW	// Range = -30 kW ... 30 kW	// ACTIVE < 0 -> CHARGE //	ACTIVE > 0 ->DISCHARGE 
+	int DISCHARGE_CURRENT = 30;			// [DISCHARGE_CURRENT] = A	// Range = 0 A ... 90 A
+	int ACTIVE = 5;					// [ACTIVE] = kW	// Range = -30 kW ... 30 kW	// ACTIVE < 0 -> CHARGE //	ACTIVE > 0 ->DISCHARGE 
 	int REACTIVE = 0;					// [REACTIVE] = kVAr	// Range = -30 kW ... 30 //REACTIVE < 0 -> inductive // REACTIVE > 0 -> capacitive //  kW
 	
 	@Override
@@ -474,7 +474,7 @@ public void SET_UPPER_LOWER_BATTERY_VOLTAGE() {
 		}
 		switch (event.getTopic()) {
 		case EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE:
-			doHandling_ON();
+//			doHandling_OFF();
 			doHandling_UPPER_LOWER_VOLTAGE();
 //			doHandling_CHARGE_DISCHARGE_CURRENT();
 //			doHandling_CHARGE_DISCHARGE();
