@@ -87,6 +87,7 @@ public class Utils {
 					case SET_FLOAT_CHARGE_VOLTAGE:
 					case SET_UPPER_VOLTAGE:
 					case SET_LOWER_VOLTAGE:
+					case SET_CLEAR_FAILURE:
 						return new IntegerWriteChannel(ess, channelId);
 //-----------------------------------STATES--------------------------------------------------
 					case Sinexcel_STATE_1:
