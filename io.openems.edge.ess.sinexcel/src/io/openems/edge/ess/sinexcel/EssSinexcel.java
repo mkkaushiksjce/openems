@@ -1,7 +1,5 @@
 package io.openems.edge.ess.sinexcel;
 
-import java.util.Optional;
-
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
@@ -236,26 +234,6 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 		stopSystem();
 	}
 
-	
-//---------------------------------------------------CHARGE AND DISCHARGE-------------------------------------------
-	public void SET_CHARGE_DISCHARGE() {
-		
-		IntegerWriteChannel SET_Active = this.channel(ChannelId.SET_CHARGE_DISCHARGE_ACTIVE);
-		IntegerWriteChannel SET_Reactive = this.channel(ChannelId.SET_CHARGE_DISCHARGE_REACTIVE);
-		try {
-			SET_Active.setNextWriteValue(ACTIVE);
-			SET_Reactive.setNextWriteValue(REACTIVE);
-			
-
-		} catch (OpenemsException e) {
-			log.error("problem occurred while trying to write the charge value" + e.getMessage());
-		}
-
-	}
-	
-	public void doHandling_CHARGE_DISCHARGE() {
-		SET_CHARGE_DISCHARGE();
-	}
 //-----------------------------------------------------MAX CHARGE AND DISCHARGE CURRENT-----------------------------------------------
 	
 	public void SET_CHARGE_DISCHARGE_CURRENT() {
@@ -301,19 +279,6 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 	public void doHandling_UPPER_LOWER_VOLTAGE() {
 		SET_UPPER_LOWER_BATTERY_VOLTAGE();
 	}
-//--------------------------------------------SET CLEAR FAILURE-------------------------------------------------------------------------------
-	public void SET_CLEAR_FAILURE_CMD() {
-	IntegerWriteChannel SET_CLEAR_FAILURE = this.channel(ChannelId.SET_CLEAR_FAILURE);
-	try {
-		SET_CLEAR_FAILURE.setNextWriteValue(CLEAR_FAILURE);
-	} catch (OpenemsException e) {
-		log.error("problem occurred while trying to write the clear failure command" + e.getMessage());
-	}
-}
-
-	public void doHandling_CLEAR_FAILURE() {
-		SET_CLEAR_FAILURE_CMD();
-	}
 	
 //------------------------------------------------------------------------------------------------------------------	
 	
@@ -322,14 +287,11 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 //------------------------------------------------------------WRITE-----------------------------------------------------------
 				new FC6WriteRegisterTask(0x028A, 
 						m(EssSinexcel.ChannelId.Start, new UnsignedWordElement(0x028A))), // Start// SETDATA_ModOnCmd				
-																													
-
 				new FC6WriteRegisterTask(0x028B, 
 						m(EssSinexcel.ChannelId.Stop, new UnsignedWordElement(0x028B))), // Stop// SETDATA_ModOffCmd
 																													
 				new FC6WriteRegisterTask(0x028D, 
 						m(EssSinexcel.ChannelId.Start, new UnsignedWordElement(0x028D))), // Start// SETDATA_GridOnCmd
-				
 				new FC6WriteRegisterTask(0x028E, 
 						m(EssSinexcel.ChannelId.Stop, new UnsignedWordElement(0x028E))), // Stop// SETDATA_GridOffCmd
 				
@@ -475,8 +437,11 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 
 	}
 //------------------------------------------------------------------------------------------------------------------------
-	private void initializePower() {					//Begrenzungen eingeben
+	private void LIMITS() {					//Watch KACO initialize
 		this.maxApparentPowerConstraint = new CircleConstraint(this, MAX_ACTIVE_POWER);
+		doHandling_UPPER_LOWER_VOLTAGE();
+		doHandling_CHARGE_DISCHARGE_CURRENT();
+		
 	}
 	
 	
@@ -503,7 +468,7 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 			SET_ACTIVE_POWER.setNextWriteValue(activeValue);
 		}
 			    catch (OpenemsException e) {
-				log.error("EssKacoBlueplanetGridsave50.applyPower(): Problem occurred while trying so set active power" + e.getMessage());
+				log.error("EssSinexcel.applyPower(): Problem occurred while trying so set active power" + e.getMessage());
 			    }
 	}
 
@@ -512,6 +477,8 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 /*
  * Example: Value 3000 means 300; Value 3001 means 300,1
  */
+	
+	private Power power;
 	private CircleConstraint maxApparentPowerConstraint = null;
 	
 	private int MAX_REACTIVE_POWER = 300;	// 30 kW
@@ -538,19 +505,15 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 		}
 		switch (event.getTopic()) {
 		case EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE:
-//			doHandling_OFF();
-			doHandling_CLEAR_FAILURE();
-			doHandling_UPPER_LOWER_VOLTAGE();
-			doHandling_CHARGE_DISCHARGE_CURRENT();
-			doHandling_CHARGE_DISCHARGE();
+			doHandling_ON();
+			LIMITS();
 			break;
 		}
 	}
 
 	@Override
 	public Power getPower() {					//Siehe KACO
-		// TODO Auto-generated method stub
-		return null;
+		return this.power;		// TODO Auto-generated method stub
 	}
 
 	@Override								// Leistungsstufen des Wechselrichters
