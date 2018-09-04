@@ -13,6 +13,7 @@ import io.openems.edge.common.channel.doc.ChannelId;
 import io.openems.edge.common.channel.doc.Doc;
 import io.openems.edge.common.channel.doc.Unit;
 import io.openems.edge.common.component.OpenemsComponent;
+import io.openems.edge.ess.api.ManagedSymmetricEss;
 import io.openems.edge.ess.api.SymmetricEss;
 
 public class Utils {
@@ -38,11 +39,45 @@ public class Utils {
 						return new IntegerReadChannel(ess, channelId);
 					}
 					return null;
+				}), Arrays.stream(ManagedSymmetricEss.ChannelId.values()).map(channelId -> {
+					switch (channelId) {
+					case DEBUG_SET_ACTIVE_POWER:
+					case DEBUG_SET_REACTIVE_POWER:
+						return new IntegerReadChannel(ess, channelId);
+					}
+					return null;
 				}), Arrays.stream(EssSinexcel.ChannelId.values()).map(channelId -> {
 					switch (channelId) {
 					
 //----------------------------------------------------------------------------------------------------------------------
-		
+					case Serial:
+					case Model:
+					case Analog_GridCurrent_Freq:
+					case Analog_ActivePower_Rms_Value_L1:
+					case Analog_ActivePower_Rms_Value_L2:
+					case Analog_ActivePower_Rms_Value_L3:
+					case Analog_ReactivePower_Rms_Value_L1:
+					case Analog_ReactivePower_Rms_Value_L2:
+					case Analog_ReactivePower_Rms_Value_L3:
+					case Analog_ApparentPower_L1:
+					case Analog_ApparentPower_L2:
+					case Analog_ApparentPower_L3:
+					case Analog_PF_RMS_Value_L1:
+					case Analog_PF_RMS_Value_L2:
+					case Analog_PF_RMS_Value_L3:
+					case Analog_ActivePower_3Phase:
+					case Analog_ReactivePower_3Phase:
+					case Analog_ApparentPower_3Phase:
+					case Analog_PowerFactor_3Phase:
+					case Analog_CHARGE_Energy:
+					case Analog_DISCHARGE_Energy:
+					case Analog_REACTIVE_Energy:
+					case Analog_Reactive_Energy_2:
+					case Target_OffGrid_Voltage:
+					case Target_OffGrid_Frequency:
+					case Analog_DC_CHARGE_Energy:
+					case Analog_DC_DISCHARGE_Energy:
+						
 					case SETDATA_GridOnCmd:
 					case SETDATA_GridOffCmd:
 					case SETDATA_ModOffCmd:

@@ -48,6 +48,10 @@ public enum Unit {
 	 * Unit of Apparent Power [VA]
 	 */
 	VOLT_AMPERE("VA"),
+	/**
+	 * Unit of kilo Apparent Power [kVA]
+	 */
+	KILO_VOLT_AMPERE("kVA"),
 
 	/*
 	 * Voltage
@@ -91,6 +95,10 @@ public enum Unit {
 	 * Unit of Energy [kWh]
 	 */
 	KILOWATT_HOURS("kWh", WATT_HOURS, 3),
+	/**
+	 * Unit of kilo Reactive Energy [kVArh]
+	 */
+	KILO_VOLT_AMPERE_REACTIVE_HOURS("kVArh"),
 
 	/*
 	 * Frequency

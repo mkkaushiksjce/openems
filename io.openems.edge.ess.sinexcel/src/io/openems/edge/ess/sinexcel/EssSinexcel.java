@@ -22,6 +22,7 @@ import io.openems.edge.bridge.modbus.api.AbstractOpenemsModbusComponent;
 import io.openems.edge.bridge.modbus.api.BridgeModbus;
 import io.openems.edge.bridge.modbus.api.ModbusProtocol;
 import io.openems.edge.bridge.modbus.api.element.SignedWordElement;
+import io.openems.edge.bridge.modbus.api.element.UnsignedDoublewordElement;
 import io.openems.edge.bridge.modbus.api.element.UnsignedWordElement;
 import io.openems.edge.bridge.modbus.api.task.FC3ReadRegistersTask;
 import io.openems.edge.bridge.modbus.api.task.FC6WriteRegisterTask;
@@ -109,6 +110,42 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 		
 		Frequency(new Doc().unit(Unit.HERTZ).level(Level.INFO).text("/100")),//
 		Temperature(new Doc().unit(Unit.DEGREE_CELSIUS)),//
+		Serial(new Doc().unit(Unit.NONE)),
+		Model(new Doc().unit(Unit.NONE)),
+		
+		Analog_GridCurrent_Freq(new Doc().unit(Unit.HERTZ)),
+		
+		Analog_ActivePower_Rms_Value_L1(new Doc().unit(Unit.KILO_WATT)),
+		Analog_ActivePower_Rms_Value_L2(new Doc().unit(Unit.KILO_WATT)),
+		Analog_ActivePower_Rms_Value_L3(new Doc().unit(Unit.KILO_WATT)),
+		
+		Analog_ReactivePower_Rms_Value_L1(new Doc().unit(Unit.KILO_VOLT_AMPERE_REACTIVE)),
+		Analog_ReactivePower_Rms_Value_L2(new Doc().unit(Unit.KILO_VOLT_AMPERE_REACTIVE)),
+		Analog_ReactivePower_Rms_Value_L3(new Doc().unit(Unit.KILO_VOLT_AMPERE_REACTIVE)),
+		//
+		Analog_ApparentPower_L1(new Doc().unit(Unit.KILO_VOLT_AMPERE)),
+		Analog_ApparentPower_L2(new Doc().unit(Unit.KILO_VOLT_AMPERE)),
+		Analog_ApparentPower_L3(new Doc().unit(Unit.KILO_VOLT_AMPERE)),
+		
+		Analog_PF_RMS_Value_L1(new Doc().unit(Unit.NONE)),
+		Analog_PF_RMS_Value_L2(new Doc().unit(Unit.NONE)),
+		Analog_PF_RMS_Value_L3(new Doc().unit(Unit.NONE)),
+		
+		Analog_ActivePower_3Phase(new Doc().unit(Unit.KILO_WATT)),
+		Analog_ReactivePower_3Phase(new Doc().unit(Unit.KILO_VOLT_AMPERE_REACTIVE)),
+		Analog_ApparentPower_3Phase(new Doc().unit(Unit.KILO_VOLT_AMPERE)),
+		Analog_PowerFactor_3Phase(new Doc().unit(Unit.NONE)),
+		
+		Analog_CHARGE_Energy(new Doc().unit(Unit.KILOWATT_HOURS)),
+		Analog_DISCHARGE_Energy(new Doc().unit(Unit.KILOWATT_HOURS)),
+		Analog_REACTIVE_Energy(new Doc().unit(Unit.KILO_VOLT_AMPERE_REACTIVE_HOURS)),
+		
+		Analog_Reactive_Energy_2(new Doc().unit(Unit.KILO_VOLT_AMPERE_REACTIVE_HOURS)),
+		Target_OffGrid_Voltage(new Doc().unit(Unit.NONE)),
+		Target_OffGrid_Frequency(new Doc().unit(Unit.HERTZ)),
+		
+		Analog_DC_CHARGE_Energy(new Doc().unit(Unit.KILO_VOLT_AMPERE)),
+		Analog_DC_DISCHARGE_Energy(new Doc().unit(Unit.KILO_VOLT_AMPERE)),
 		
 		
 		AC_Apparent_Power(new Doc().unit(Unit.VOLT_AMPERE)),//
@@ -193,10 +230,8 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 
 	public void stopSystem() {
 		IntegerWriteChannel SETDATA_ModOffCmd = this.channel(ChannelId.Stop);
-		IntegerWriteChannel SETDATA_GridOffCmd = this.channel(ChannelId.Stop);
 
 		try {
-			SETDATA_GridOffCmd.setNextWriteValue(RequestedState.ON.value);
 			SETDATA_ModOffCmd.setNextWriteValue(RequestedState.ON.value);
 		} catch (OpenemsException e) {
 			log.error("problem occurred while trying to stop system" + e.getMessage());
@@ -325,13 +360,73 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
 //				new FC3ReadRegistersTask(0x0084, Priority.HIGH, //
 //						m(EssSinexcel.ChannelId.Temperature, new SignedWordElement(0x0084))), 					// int16 // Line 62	Magnification = 0
 			
-
-				
 				new FC3ReadRegistersTask(0x0260, Priority.HIGH,
 						m(EssSinexcel.ChannelId.Sinexcel_State, new UnsignedWordElement(0x0260))),
 				
-
+				new FC3ReadRegistersTask(0x0011, Priority.LOW,
+						m(EssSinexcel.ChannelId.Serial, new UnsignedWordElement(0x0011))),
+				new FC3ReadRegistersTask(0x0001, Priority.LOW,
+						m(EssSinexcel.ChannelId.Model, new UnsignedWordElement(0x0001))),
 				
+				new FC3ReadRegistersTask(0x006B, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_GridCurrent_Freq, new UnsignedWordElement(0x006B))),
+				
+				new FC3ReadRegistersTask(0x006E, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_ActivePower_Rms_Value_L1, new SignedWordElement(0x006E))),		//L1 // kW //100
+				new FC3ReadRegistersTask(0x006F, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_ActivePower_Rms_Value_L2, new SignedWordElement(0x006F))),		//L2 // kW // 100
+				new FC3ReadRegistersTask(0x0070, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_ActivePower_Rms_Value_L3, new SignedWordElement(0x0070))),		//L3 // kW // 100
+				
+				new FC3ReadRegistersTask(0x0071, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_ReactivePower_Rms_Value_L1, new SignedWordElement(0x0071))),		//L1 // kVAr // 100
+				new FC3ReadRegistersTask(0x0072, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_ReactivePower_Rms_Value_L2, new SignedWordElement(0x0072))),		//L2 // kVAr // 100
+				new FC3ReadRegistersTask(0x0073, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_ReactivePower_Rms_Value_L3, new SignedWordElement(0x0073))),		//L3 // kVAr // 100
+				
+				new FC3ReadRegistersTask(0x0074, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_ApparentPower_L1, new SignedWordElement(0x0074))),				//L1 // kVA // 100
+				new FC3ReadRegistersTask(0x0075, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_ApparentPower_L2, new SignedWordElement(0x0075))),				//L2 // kVA // 100
+				new FC3ReadRegistersTask(0x0076, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_ApparentPower_L3, new SignedWordElement(0x0076))),				//L3 // kVA // 100
+				
+				new FC3ReadRegistersTask(0x0077, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_PF_RMS_Value_L1, new SignedWordElement(0x0077))),				// 100
+				new FC3ReadRegistersTask(0x0078, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_PF_RMS_Value_L2, new SignedWordElement(0x0078))),				// 100
+				new FC3ReadRegistersTask(0x0079, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_PF_RMS_Value_L3, new SignedWordElement(0x0079))),				// 100
+				
+				new FC3ReadRegistersTask(0x007A, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_ActivePower_3Phase, new SignedWordElement(0x007A))),				// 1 
+				new FC3ReadRegistersTask(0x007B, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_ReactivePower_3Phase, new SignedWordElement(0x007B))),			// 1
+				new FC3ReadRegistersTask(0x007C, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_ApparentPower_3Phase, new UnsignedWordElement(0x007C))),			// 1
+				new FC3ReadRegistersTask(0x007D, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_PowerFactor_3Phase, new SignedWordElement(0x007D))),				// 1
+				
+				new FC3ReadRegistersTask(0x007E, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_CHARGE_Energy, new UnsignedDoublewordElement(0x007E))),				// 1
+				new FC3ReadRegistersTask(0x0080, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_DISCHARGE_Energy, new UnsignedDoublewordElement(0x0080))),			// 1
+				new FC3ReadRegistersTask(0x0082, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_REACTIVE_Energy, new UnsignedDoublewordElement(0x0082))),			// 1
+				
+				new FC3ReadRegistersTask(0x0082, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_Reactive_Energy_2, new UnsignedDoublewordElement(0x0082))),			//1 //Line61
+				
+				new FC3ReadRegistersTask(0x0089, Priority.LOW,
+						m(EssSinexcel.ChannelId.Target_OffGrid_Voltage, new UnsignedWordElement(0x0089))),					//Range: -0,1 ... 0,1 (to rated Voltage) // 100
+				new FC3ReadRegistersTask(0x008A, Priority.LOW,
+						m(EssSinexcel.ChannelId.Target_OffGrid_Frequency, new SignedWordElement(0x008A))),						//Range: -2 ... 2Hz		//100
+				
+				new FC3ReadRegistersTask(0x0090, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_DC_CHARGE_Energy, new UnsignedDoublewordElement(0x0090))),			//1
+				new FC3ReadRegistersTask(0x0092, Priority.HIGH,
+						m(EssSinexcel.ChannelId.Analog_DC_DISCHARGE_Energy, new UnsignedDoublewordElement(0x0092))),		//1
 //----------------------------------------------------------START and STOP--------------------------------------------------------------------				
 				new FC3ReadRegistersTask(0x023A, Priority.LOW, //
 						m(EssSinexcel.ChannelId.SUNSPEC_DID_0103, new UnsignedWordElement(0x023A))), //
@@ -478,6 +573,7 @@ public class EssSinexcel extends AbstractOpenemsModbusComponent
  * Example: Value 3000 means 300; Value 3001 means 300,1
  */
 	
+	@Reference
 	private Power power;
 	private CircleConstraint maxApparentPowerConstraint = null;
 	
