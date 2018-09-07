@@ -16,6 +16,7 @@ import io.openems.common.types.OpenemsType;
 import io.openems.edge.bridge.modbus.api.element.AbstractModbusElement;
 import io.openems.edge.bridge.modbus.api.element.ModbusCoilElement;
 import io.openems.edge.bridge.modbus.api.element.ModbusRegisterElement;
+import io.openems.edge.bridge.modbus.api.element.StringWordElement;
 import io.openems.edge.bridge.modbus.api.element.UnsignedWordElement;
 import io.openems.edge.common.channel.Channel;
 import io.openems.edge.common.channel.WriteChannel;
@@ -287,4 +288,5 @@ public abstract class AbstractOpenemsModbusComponent extends AbstractOpenemsComp
 	protected final BitChannelMapper bm(UnsignedWordElement element) {
 		return new BitChannelMapper(element);
 	}
-}
+
+	}

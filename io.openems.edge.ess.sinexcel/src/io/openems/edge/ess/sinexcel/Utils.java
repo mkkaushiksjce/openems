@@ -9,6 +9,7 @@ import io.openems.edge.common.channel.IntegerReadChannel;
 import io.openems.edge.common.channel.IntegerWriteChannel;
 import io.openems.edge.common.channel.StateChannel;
 import io.openems.edge.common.channel.StateCollectorChannel;
+import io.openems.edge.common.channel.StringReadChannel;
 import io.openems.edge.common.channel.doc.ChannelId;
 import io.openems.edge.common.channel.doc.Doc;
 import io.openems.edge.common.channel.doc.Unit;
@@ -50,7 +51,7 @@ public class Utils {
 					switch (channelId) {
 					
 //----------------------------------------------------------------------------------------------------------------------
-					case Serial:
+					
 					case Model:
 					case Manufacturer:
 					case Model_2:
@@ -132,6 +133,9 @@ public class Utils {
 					case SET_UPPER_VOLTAGE:
 					case SET_LOWER_VOLTAGE:
 						return new IntegerWriteChannel(ess, channelId);
+						
+					case Serial:
+						return new StringReadChannel(ess, channelId);
 //-----------------------------------STATES--------------------------------------------------
 					case Sinexcel_STATE_1:
 					case Sinexcel_STATE_2:
