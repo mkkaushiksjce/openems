@@ -1,5 +1,4 @@
 name: openems
 title: OpenEMS-Docs
-start_page: ROOT:introduction.adoc
 nav:
 - modules/ROOT/nav.adoc
