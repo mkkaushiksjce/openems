@@ -1,4 +1,4 @@
-name: OpenEMS-Doc
+name: openems
 title: OpenEMS-Docs
 start_page: ROOT:introduction.adoc
 nav:
