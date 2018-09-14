@@ -65,9 +65,22 @@ public abstract class ManagedSymmetricEssDummy extends AbstractOpenemsComponent 
 		return this;
 	}
 
+	public ManagedSymmetricEssDummy soc(int value) {
+		this.getSoc().setNextValue(value);
+		this.getSoc().nextProcessImage();
+		return this;
+	}
+
+	private int precision = 1;
+
+	public ManagedSymmetricEssDummy precision(int value) {
+		this.precision = value;
+		return this;
+	}
+
 	@Override
 	public int getPowerPrecision() {
-		return 1;
+		return this.precision;
 	}
 
 	@Override
