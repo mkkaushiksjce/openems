@@ -1,4 +1,4 @@
-* xref:introduction.adoc[Introduction]
+* xref:index.adoc[Introduction]
 * xref:gettingstarted.adoc[Getting Started]
 * xref:coreconcepts.adoc[Core concepts & terminology]
 * xref:openemsedge.adoc[OpenEMS Edge]
