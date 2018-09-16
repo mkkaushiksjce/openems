@@ -1,3 +1,4 @@
+= Open Energy Management System
 ifdef::backend-pdf[]
 = Open Energy Management System
 endif::[]
