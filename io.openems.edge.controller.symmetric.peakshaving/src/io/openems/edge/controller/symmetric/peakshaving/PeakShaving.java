@@ -1,4 +1,4 @@
-package io.openems.edge.controller.symmetric.balancing;
+package io.openems.edge.controller.symmetric.peakshaving;
 
 import java.util.Optional;
 
@@ -16,7 +16,6 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.openems.common.exceptions.InvalidValueException;
 import io.openems.edge.common.component.AbstractOpenemsComponent;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.controller.api.Controller;
@@ -30,13 +29,32 @@ import io.openems.edge.ess.power.api.Relationship;
 import io.openems.edge.meter.api.SymmetricMeter;
 
 @Designate(ocd = Config.class, factory = true)
-@Component(name = "Controller.Symmetric.Balancing", immediate = true, configurationPolicy = ConfigurationPolicy.REQUIRE)
-public class Balancing extends AbstractOpenemsComponent implements Controller, OpenemsComponent {
+@Component( //
+		name = "Controller.Symmetric.PeakShaving", //
+		immediate = true, //
+		configurationPolicy = ConfigurationPolicy.REQUIRE //
+)
+public class PeakShaving extends AbstractOpenemsComponent implements Controller, OpenemsComponent {
 
-	private final Logger log = LoggerFactory.getLogger(Balancing.class);
+	private final Logger log = LoggerFactory.getLogger(PeakShaving.class);
 
 	@Reference
 	protected ConfigurationAdmin cm;
+
+	/*
+	 * Peak-Shaving power
+	 * 
+	 * Grid purchase power above this value is considered a peak and shaved to this
+	 * value.
+	 */
+	private int peakShavingPower;
+
+	/**
+	 * Recharge power
+	 * 
+	 * If grid purchase power is below this value battery is recharged.
+	 */
+	private int rechargePower;
 
 	@Activate
 	void activate(ComponentContext context, Config config) {
@@ -49,6 +67,9 @@ public class Balancing extends AbstractOpenemsComponent implements Controller, O
 		if (OpenemsComponent.updateReferenceFilter(cm, config.service_pid(), "meter", config.meter_id())) {
 			return;
 		}
+
+		this.peakShavingPower = config.peakShavingPower();
+		this.rechargePower = config.rechargePower();
 	}
 
 	@Reference(policy = ReferencePolicy.STATIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.MANDATORY)
@@ -60,16 +81,6 @@ public class Balancing extends AbstractOpenemsComponent implements Controller, O
 	@Deactivate
 	protected void deactivate() {
 		super.deactivate();
-	}
-
-	/**
-	 * Calculates required charge/discharge power
-	 * 
-	 * @throws InvalidValueException
-	 */
-	private int calculateRequiredPower() {
-		return this.meter.getActivePower().value().orElse(0) /* current buy-from/sell-to grid */
-				+ this.ess.getActivePower().value().orElse(0) /* current charge/discharge Ess */;
 	}
 
 	@Override
@@ -84,20 +95,40 @@ public class Balancing extends AbstractOpenemsComponent implements Controller, O
 		if (gridMode.orElse(SymmetricEss.GridMode.UNDEFINED) != SymmetricEss.GridMode.ON_GRID) {
 			return;
 		}
-		/*
-		 * Calculates required charge/discharge power
-		 */
-		int requiredPower = this.calculateRequiredPower();
+
+		// Calculate 'real' grid-power (without current ESS charge/discharge)
+		int gridPower = this.meter.getActivePower().value().orElse(0) /* current buy-from/sell-to grid */
+				+ this.ess.getActivePower().value().orElse(0) /* current charge/discharge Ess */;
+
+		int nextEssPower;
+		if (gridPower >= this.peakShavingPower) {
+			/*
+			 * Peak-Shaving
+			 */
+			nextEssPower = gridPower -= this.peakShavingPower;
+
+		} else if (gridPower <= this.rechargePower) {
+			/*
+			 * Recharge
+			 */
+			nextEssPower = gridPower -= this.rechargePower;
+
+		} else {
+			/*
+			 * Do nothing
+			 */
+			nextEssPower = 0;
+		}
 
 		Power power = ess.getPower();
-		if (requiredPower > 0) {
+		if (nextEssPower > 0) {
 			/*
 			 * Discharge
 			 */
 			// fit into max possible discharge power
 			int maxDischargePower = power.getMaxActivePower();
-			if (requiredPower > maxDischargePower) {
-				requiredPower = maxDischargePower;
+			if (nextEssPower > maxDischargePower) {
+				nextEssPower = maxDischargePower;
 			}
 
 		} else {
@@ -106,15 +137,14 @@ public class Balancing extends AbstractOpenemsComponent implements Controller, O
 			 */
 			// fit into max possible discharge power
 			int maxChargePower = power.getMinActivePower();
-			if (requiredPower < maxChargePower) {
-				requiredPower = maxChargePower;
+			if (nextEssPower < maxChargePower) {
+				nextEssPower = maxChargePower;
 			}
 		}
 
 		/*
 		 * set result
 		 */
-		this.ess.addPowerConstraint(ConstraintType.CYCLE, Phase.ALL, Pwr.ACTIVE, Relationship.EQUALS, requiredPower); //
-		this.ess.addPowerConstraint(ConstraintType.CYCLE, Phase.ALL, Pwr.REACTIVE, Relationship.EQUALS, 0);
+		this.ess.addPowerConstraint(ConstraintType.CYCLE, Phase.ALL, Pwr.ACTIVE, Relationship.EQUALS, nextEssPower); //
 	}
 }
