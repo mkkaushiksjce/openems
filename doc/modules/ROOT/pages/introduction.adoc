@@ -1,26 +1,24 @@
-= Open Energy Management System
 ifdef::backend-pdf[]
 = Open Energy Management System
-include::_attributes.adoc[]
 endif::[]
 ifndef::backend-pdf[]
-include::_attributes.adoc[]
-
-= image:OpenEMS-Logo.png[the Feneco - OpenEMS Logo,400,role="related right"]  Open Energy Management System
+= image:OpenEMS-Logo.png[the Feneco - OpenEMS Logo,400,role="related right"]  
 endif::[]
+:sectnums:
+:sectnumlevels: 4
+:toc:
+:toclevels: 4
+:experimental:
+:keywords: AsciiDoc
 :source-highlighter: highlight.js
 :icons: font
-:idprefix:
-:idseparator: -
-:table-caption!:
-:title-logo-image: image:OpenEMS-Logo.png[pdfwidth=4.25in,align=center]
+:title-logo-image: image:OpenEMS-Logo.png[pdfwidth=4.25in,align=right]
 
-== Introduction
 
 OpenEMS is a modular platform for energy management applications.
 It was developed around the requirements of controlling, monitoring and integrating energy storage systems together with renewable energy sources and complementary devices and services.
 
-=== OpenEMS IoT stack
+== OpenEMS IoT stack
 
 The OpenEMS 'Internet of Things' stack contains three main components:
 
@@ -28,7 +26,7 @@ The OpenEMS 'Internet of Things' stack contains three main components:
  * **OpenEMS UI** is the generic user interface
  * **OpenEMS Backend** runs on a (cloud) server, connects the decentralized Edge systems and provides aggregation, monitoring and control via internet
 
-=== Features
+== Features
 
 The OpenEMS software architecture was designed to leverage some features that are required by a modern and flexible Energy Management System:
 
@@ -42,7 +40,7 @@ image::ui-screenshots.png[Screenshots of OpenEMS UI]
 .Screenshots of OpenEMS UI
 image::ui-screenshots2.png[Screenshots of OpenEMS UI]
 
-=== Open Source philosophy
+== Open Source philosophy
 
 OpenEMS development was started by https://www.fenecon.de[FENECON GmbH icon:external-link[]], a German company specialized in manufacturing and project development of energy storage systems. It is the software stack behind https://fenecon.de/page/fems[FEMS - FENECON Energy Management System icon:external-link[]] and widely used in private, commercial and industrial applications.
 
@@ -50,7 +48,7 @@ We are inviting third parties - like universities, hardware manufacturers, softw
 
 OpenEMS is funded by several federal and EU funding projects. If you are a developer and you would like to get hired by one of the partner companies or universities for working on OpenEMS, please send your motivation letter to fems@fenecon.de.
 
-=== License
+== License
 
 * OpenEMS Edge 
 * OpenEMS Backend
@@ -67,7 +65,7 @@ Copyright (C) 2016-2018 FENECON GmbH.
 This product includes software developed at FENECON GmbH: you can
 redistribute it and/or modify it under the terms of the [GNU Affero General Public License version 3](LICENSE-AGPL-3.0).
 
-=== Development guidelines
+== Development guidelines
 
 Development follows the https://de.wikipedia.org/wiki/Agile_Softwareentwicklung[Agile Manifesto icon:external-link[]] and is driven by the https://de.wikipedia.org/wiki/Scrum[Scrum icon:external-link[]] methodology. 
 The source code is available online at http://openems.io and on https://github.com/OpenEMS/openems[GitHub icon:github[]]. 
@@ -81,11 +79,11 @@ The documentation is generated using http://asciidoc.org[AsciiDoc icon:external-
 For handling git we recommend https://www.sourcetreeapp.com/[Sourctree by Atlassian icon:external-link[]].
 
 // TODO remove this after migration to OSGi is finished
-=== Migration to OSGi
+== Migration to OSGi
 
 Starting with version https://github.com/OpenEMS/openems/releases/tag/2018.7[2018.7 icon:github[]] OpenEMS Edge is getting migrated to https://en.wikipedia.org/wiki/OSGi[OSGi icon:external-link[]], a platform to provide a completely modular and dynamic service oriented system. Certain parts of Edge are not yet migrated and for the time being only available in the deprecated https://github.com/OpenEMS/openems/tree/old_master[old_master branch icon:github[]].
 
-=== System architecture
+== System architecture
 
 OpenEMS is generally used in combination with external hardware and software components
 (the exception is a simulated development environment - see https://github.com/OpenEMS/openems/blob/old_master/README.md#get-started[Getting Started])
@@ -93,3 +91,6 @@ As a brief overview, this is how OpenEMS is used in production setups:
 
 .OpenEMS system architecture
 image::system-architecture.png[OpenEMS system architecture]
+
+Stefan Feilmeier (c) 2018 FENECON GmbH
+Version 2018.9.0
