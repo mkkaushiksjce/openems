@@ -4,15 +4,11 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 import io.openems.edge.common.channel.AbstractReadChannel;
-import io.openems.edge.common.channel.FloatReadChannel;
 import io.openems.edge.common.channel.IntegerReadChannel;
 import io.openems.edge.common.channel.IntegerWriteChannel;
 import io.openems.edge.common.channel.StateChannel;
 import io.openems.edge.common.channel.StateCollectorChannel;
 import io.openems.edge.common.channel.StringReadChannel;
-import io.openems.edge.common.channel.doc.ChannelId;
-import io.openems.edge.common.channel.doc.Doc;
-import io.openems.edge.common.channel.doc.Unit;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.ess.api.ManagedSymmetricEss;
 import io.openems.edge.ess.api.SymmetricEss;
@@ -52,11 +48,7 @@ public class Utils {
 					
 //----------------------------------------------------------------------------------------------------------------------
 					
-					case Model:
-					case Manufacturer:
-					case Model_2:
-					case Version:
-					case Serial_Number:
+					
 					case Analog_GridCurrent_Freq:
 					case Analog_ActivePower_Rms_Value_L1:
 					case Analog_ActivePower_Rms_Value_L2:
@@ -135,6 +127,12 @@ public class Utils {
 						return new IntegerWriteChannel(ess, channelId);
 						
 					case Serial:
+					case Model:
+					case Manufacturer:
+					case Model_2:
+					case Version:
+					case Serial_Number:
+						
 						return new StringReadChannel(ess, channelId);
 //-----------------------------------STATES--------------------------------------------------
 					case Sinexcel_STATE_1:
