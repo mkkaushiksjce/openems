@@ -27,14 +27,14 @@ link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.ess.api/src
 A generic Energy Storage System
 +
 |===
-include::Ess.adoc[tag=channels]
+include::https://github.com/OpenEMS/openems/blob/develop/doc/_include/nature/Ess.adoc[tag=channels]
 |===
 
-link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.ess.api/src/io/openems/edge/ess/symmetric/readonly/api/SymmetricEssReadonly.java[SymmetricEssReadonly icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.ess.api/src/io/openems/edge/ess/api/SymmetricEss.java[SymmetricEssReadonly icon:code[]]::
 A symmetric Energy Storage System in readonly-mode.
 // TODO add channels
 
-link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.ess.api/src/io/openems/edge/ess/symmetric/api/SymmetricEss.java[SymmetricEss icon:code[]]::
+//link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.ess.api/src/io/openems/edge/ess/api/ManagedSymmetricEss.java[SymmetricEss icon:code[]]::
 A symmetric, controllable Energy Storage System.
 // TODO add channels
 
@@ -46,15 +46,15 @@ A solar charger that is connected to DC side of an energy storage system.
 
 === Meter
 
-link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.meter.api/src/io/openems/edge/meter/api/Meter.java[Meter icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.meter.api/src/io/openems/edge/meter/api/MeterType.java[Meter icon:code[]]::
 A generic electric power meter.
 // TODO add channels
 
-link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.meter.api/src/io/openems/edge/meter/symmetric/api/SymmetricMeter.java[SymmetricMeter icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.meter.api/src/io/openems/edge/meter/api/SymmetricMeter.java[SymmetricMeter icon:code[]]::
 A power meter for symmetric metering.
 // TODO add channels
 
-link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.meter.api/src/io/openems/edge/meter/asymmetric/api/AsymmetricMeter.java[AsymmetricMeter icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.meter.api/src/io/openems/edge/meter/api/AsymmetricMeter.java[AsymmetricMeter icon:code[]]::
 A power meter for asymmetric metering.
 // TODO add channels
 
@@ -76,13 +76,13 @@ To simplify the implementation of hardware that is connected via certain standar
 
 === Modbus/TCP
 
-link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.bridge.modbus/src/io/openems/edge/bridge/modbus/BridgeModbusTcp.java[Modbus/TCP icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.bridge.modbus/src/io/openems/edge/bridge/modbus/BridgeModbusTcpImpl.java[Modbus/TCP icon:code[]]::
 https://en.wikipedia.org/wiki/Modbus[Modbus/TCP icon:external-link[]] is a widely used standard for fieldbus connections via TCP/IP network. It is used by all kinds of hardware devices like photovoltaics inverters, electric meters, and so on.
 // TODO add configuration settings
 
 === Modbus/RTU
 
-link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.bridge.modbus/src/io/openems/edge/bridge/modbus/BridgeModbusSerial.java[Modbus/Serial icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.bridge.modbus/src/io/openems/edge/bridge/modbus/BridgeModbusSerialImpl.java[Modbus/Serial icon:code[]]::
 https://en.wikipedia.org/wiki/Modbus[Modbus/RTU icon:external-link[]] is a widely used standard for fieldbus connections via RS485 serial bus. It is used by all kinds of hardware devices like photovoltaics inverters, electric meters, and so on.
 // TODO add configuration settings
 
