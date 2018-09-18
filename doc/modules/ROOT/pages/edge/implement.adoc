@@ -14,7 +14,7 @@ endif::[]
 
 This chapter explains the steps required to implement a Device in OpenEMS Edge. The example shows the implementation of a http://www.socomec.co.uk/range-single-circuit-multifunction-meters_en.htlm?product=/diris-a14_en.html[SOCOMEC DIRIS A14 power meter icon:external-link[]]. The communication is via Modbus/RTU. The actual source code of the implementation can be found link:../io.openems.edge.meter.socomec.dirisa14/src/io/openems/edge/meter/socomec/dirisa14/MeterSocomecDirisA14.java[here icon:code[]]. 
 
-The tutorial is based on the <<_getting_started>> guide.
+The tutorial is based on the xref:gettingstarted.adoc[Getting Started] guide.
 
 === Create a new OSGi Bundle
 

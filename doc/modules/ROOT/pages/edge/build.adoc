@@ -14,7 +14,7 @@ This chapter explains, how OpenEMS Edge can be compiled to a JAR file that can b
 
 == Build using Eclipse IDE
 
-. Inside Eclipse IDE open the *io.openems.edge.application* project and open the link:../io.openems.edge.application/EdgeApp.bndrun[EdgeApp.bndrun icon:code[]] file.
+. Inside Eclipse IDE open the *io.openems.edge.application* project and open the link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.application/EdgeApp.bndrun[EdgeApp.bndrun icon:code[]] file.
 +
 .Eclipse IDE EdgeApp.bndrun
 image::eclipse-edgeapp-bndrun.png[Eclipse IDE EdgeApp.bndrun]
