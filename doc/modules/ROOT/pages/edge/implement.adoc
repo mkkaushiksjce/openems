@@ -184,7 +184,7 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 <1> The *@ObjectClassDefinition* annotation defines this file as a Meta Type Resource for OSGi configuration admin. Use it to set a _name_ and _description_ for this OpenEMS Component.
 // TODO add screenshot that shows how the strings are used in Apache
 <2> The *service_pid* is used in internally by OpenEMS Edge framework and is automatically filled by OSGi.
-<3> The *id* configuration parameter sets the OpenEMS Component-ID (see xref:coreconcepts.adoc#_channel[Channel Adress]). _Note_: A *default* ID 'meter0' is defined. It is good practice to define such an ID here, as it simplifies configuration in the UI.
+<3> The *id* configuration parameter sets the OpenEMS Component-ID (see xref:coreconcepts.adoc[Channel Adress]). _Note_: A *default* ID 'meter0' is defined. It is good practice to define such an ID here, as it simplifies configuration in the UI.
 <4> The *enabled* parameter provides a _soft_ way of deactivating an OpenEMS Component programmatically.
 <5> The *@AttributeDefinition* annotation provides meta information about a configuration parameter like _name_ and _description_.
 <6> The 'Meter' nature requires definition of a MeterType that defines the purpose of the Meter. We will let the user define this type by a configuration parameter.
@@ -310,7 +310,7 @@ public class MeterSocomecDirisA14 extends AbstractOpenemsModbusComponent impleme
 
 }
 ----
-<1> The class extends *AbstractOpenemsModbusComponent* and specifically implements *OpenemsComponent* again. This makes it an <<_openems_component>>.
+<1> The class extends *AbstractOpenemsModbusComponent* and specifically implements *OpenemsComponent* again. This makes it an xref:coreconcepts.adoc#_openems_component[OpenEMS Component].
 <2> The *activate()* method can be adjusted to not only take a Config object, but also provides a _ComponentContext_. OSGi takes care of providing both on activation of the Component.
 <3> All logic for activating and deactivating the OpenEMS Component is hidden in the super class and just needs to be called from here.
 +
@@ -326,7 +326,7 @@ protected ConfigurationAdmin cm;
 +
 This solves the first error. We can now refer to an instance of _ConfigurationAdmin_ via `this.cm`.
 
-. _AbstractOpenemsModbusComponent_ requires us to implement a *defineModbusProtocol()* method that returns an instance of *ModbusProtocol*. The _ModbusProtocol_ class maps Modbus addresses to OpenEMS <<_channel>>s and provides some conversion utilities. Instantiation of a _ModbusProtocol_ object heavily uses the https://en.wikipedia.org/wiki/Builder_pattern#Java[Builder pattern icon:external-link[]] 
+. _AbstractOpenemsModbusComponent_ requires us to implement a *defineModbusProtocol()* method that returns an instance of *ModbusProtocol*. The _ModbusProtocol_ class maps Modbus addresses to OpenEMS xref:coreconcepts.adoc#_channel[Channels] and provides some conversion utilities. Instantiation of a _ModbusProtocol_ object heavily uses the https://en.wikipedia.org/wiki/Builder_pattern#Java[Builder pattern icon:external-link[]] 
 +
 [source,java]
 ----
