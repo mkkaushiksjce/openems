@@ -184,7 +184,7 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 <1> The *@ObjectClassDefinition* annotation defines this file as a Meta Type Resource for OSGi configuration admin. Use it to set a _name_ and _description_ for this OpenEMS Component.
 // TODO add screenshot that shows how the strings are used in Apache
 <2> The *service_pid* is used in internally by OpenEMS Edge framework and is automatically filled by OSGi.
-<3> The *id* configuration parameter sets the OpenEMS Component-ID (see xref:coreconcepts.adoc[Channel Adress]). _Note_: A *default* ID 'meter0' is defined. It is good practice to define such an ID here, as it simplifies configuration in the UI.
+<3> The *id* configuration parameter sets the OpenEMS Component-ID (see xref:coreconcepts.adoc#channel[Channel Adress]). _Note_: A *default* ID 'meter0' is defined. It is good practice to define such an ID here, as it simplifies configuration in the UI.
 <4> The *enabled* parameter provides a _soft_ way of deactivating an OpenEMS Component programmatically.
 <5> The *@AttributeDefinition* annotation provides meta information about a configuration parameter like _name_ and _description_.
 <6> The 'Meter' nature requires definition of a MeterType that defines the purpose of the Meter. We will let the user define this type by a configuration parameter.
@@ -357,7 +357,7 @@ protected ModbusProtocol defineModbusProtocol(int unitId) {
 +
 Using this principle a complete Modbus table consisting of multiple register blocks that need to be read or written with different Modbus function codes can be defined. For details have a look at the existing implementation classes inside the Modbus Bridge source code.
 
-. OpenEMS <<_channel>>s have a two-stage implementation. _Declaration_ happens inside the Nature - for common Channels - and the Component - for custom Channels specific to the Device. _Definition_ (i.e. instantiation of the Channel object) happens inside the Component.
+. OpenEMS xref:coreconcepts.adoc[Channels] have a two-stage implementation. _Declaration_ happens inside the Nature - for common Channels - and the Component - for custom Channels specific to the Device. _Definition_ (i.e. instantiation of the Channel object) happens inside the Component.
 +
 For now we only used Channels defined by the Meter Nature, e.g. link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.meter.api/src/io/openems/edge/meter/api/SymmetricMeter.java[SymmetricMeter.ChannelId.ACTIVE_POWER' icon:code[]]. It is still good practice to add a skeleton for custom Channels *Declaration* to the Component implementation. We therefor add the following _Channel Declaration_ block inside the class:
 +
