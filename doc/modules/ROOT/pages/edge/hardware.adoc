@@ -23,11 +23,11 @@ Technically Natures are implemented as OSGi API Bundles.
 
 An Energy Storage System is an integrated system with battery and battery inverter.
 
-link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.ess.api/src/io/openems/edge/ess/api/Ess.java[Ess icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.ess.api/src/io/openems/edge/ess/api/SymmetricEss.java[Ess icon:code[]]::
 A generic Energy Storage System
 +
 |===
-include::_include/nature/Ess.adoc[tag=channels]
+include::Ess.adoc[tag=channels]
 |===
 
 link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.ess.api/src/io/openems/edge/ess/symmetric/readonly/api/SymmetricEssReadonly.java[SymmetricEssReadonly icon:code[]]::
