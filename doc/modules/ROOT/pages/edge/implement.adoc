@@ -18,7 +18,7 @@ The tutorial is based on the xref:gettingstarted.adoc[Getting Started] guide.
 
 === Create a new OSGi Bundle
 
-For more information see xref:coreconcepts.adoc#osgi_bundle[OSGi Bundle].
+For more information see xref:coreconcepts.adoc#_osgi_bundle[OSGi Bundle].
 
 . In the menu choose btn:[File] -> btn:[New] -> btn:[Other]
 +

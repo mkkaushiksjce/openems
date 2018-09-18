@@ -23,50 +23,50 @@ Technically Natures are implemented as OSGi API Bundles.
 
 An Energy Storage System is an integrated system with battery and battery inverter.
 
-link:../io.openems.edge.ess.api/src/io/openems/edge/ess/api/Ess.java[Ess icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.ess.api/src/io/openems/edge/ess/api/Ess.java[Ess icon:code[]]::
 A generic Energy Storage System
 +
 |===
 include::_include/nature/Ess.adoc[tag=channels]
 |===
 
-link:../io.openems.edge.ess.api/src/io/openems/edge/ess/symmetric/readonly/api/SymmetricEssReadonly.java[SymmetricEssReadonly icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.ess.api/src/io/openems/edge/ess/symmetric/readonly/api/SymmetricEssReadonly.java[SymmetricEssReadonly icon:code[]]::
 A symmetric Energy Storage System in readonly-mode.
 // TODO add channels
 
-link:../io.openems.edge.ess.api/src/io/openems/edge/ess/symmetric/api/SymmetricEss.java[SymmetricEss icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.ess.api/src/io/openems/edge/ess/symmetric/api/SymmetricEss.java[SymmetricEss icon:code[]]::
 A symmetric, controllable Energy Storage System.
 // TODO add channels
 
 // TODO: describe SymmetricPower 'Active/Reactive Power circle' + callback
 
-link:../io.openems.edge.ess.api/src/io/openems/edge/ess/dccharger/api/EssDcCharger.java[EssDcCharger icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.ess.api/src/io/openems/edge/ess/dccharger/api/EssDcCharger.java[EssDcCharger icon:code[]]::
 A solar charger that is connected to DC side of an energy storage system. 
 // TODO add channels
 
 === Meter
 
-link:../io.openems.edge.meter.api/src/io/openems/edge/meter/api/Meter.java[Meter icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.meter.api/src/io/openems/edge/meter/api/Meter.java[Meter icon:code[]]::
 A generic electric power meter.
 // TODO add channels
 
-link:../io.openems.edge.meter.api/src/io/openems/edge/meter/symmetric/api/SymmetricMeter.java[SymmetricMeter icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.meter.api/src/io/openems/edge/meter/symmetric/api/SymmetricMeter.java[SymmetricMeter icon:code[]]::
 A power meter for symmetric metering.
 // TODO add channels
 
-link:../io.openems.edge.meter.api/src/io/openems/edge/meter/asymmetric/api/AsymmetricMeter.java[AsymmetricMeter icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.meter.api/src/io/openems/edge/meter/asymmetric/api/AsymmetricMeter.java[AsymmetricMeter icon:code[]]::
 A power meter for asymmetric metering.
 // TODO add channels
 
 === EVCS (Electric Vehicle Charging Station)
 
-link:../io.openems.edge.evcs.api/src/io/openems/edge/evcs/api/Evcs.java[Evcs icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.evcs.api/src/io/openems/edge/evcs/api/Evcs.java[Evcs icon:code[]]::
 A charging station for electric vehicles like e-cars and e-buses.
 // TODO add channels
 
 === I/O (Digital Input/Output)
 
-link:../io.openems.edge.io.api/src/io/openems/edge/io/api/DigitalOutput.java[DigitalOutput icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.io.api/src/io/openems/edge/io/api/DigitalOutput.java[DigitalOutput icon:code[]]::
 One or more digital outputs or relays. 
 // TODO add channels
 
@@ -76,13 +76,13 @@ To simplify the implementation of hardware that is connected via certain standar
 
 === Modbus/TCP
 
-link:../io.openems.edge.bridge.modbus/src/io/openems/edge/bridge/modbus/BridgeModbusTcp.java[Modbus/TCP icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.bridge.modbus/src/io/openems/edge/bridge/modbus/BridgeModbusTcp.java[Modbus/TCP icon:code[]]::
 https://en.wikipedia.org/wiki/Modbus[Modbus/TCP icon:external-link[]] is a widely used standard for fieldbus connections via TCP/IP network. It is used by all kinds of hardware devices like photovoltaics inverters, electric meters, and so on.
 // TODO add configuration settings
 
 === Modbus/RTU
 
-link:../io.openems.edge.bridge.modbus/src/io/openems/edge/bridge/modbus/BridgeModbusSerial.java[Modbus/Serial icon:code[]]::
+link:https://github.com/OpenEMS/openems/blob/develop/io.openems.edge.bridge.modbus/src/io/openems/edge/bridge/modbus/BridgeModbusSerial.java[Modbus/Serial icon:code[]]::
 https://en.wikipedia.org/wiki/Modbus[Modbus/RTU icon:external-link[]] is a widely used standard for fieldbus connections via RS485 serial bus. It is used by all kinds of hardware devices like photovoltaics inverters, electric meters, and so on.
 // TODO add configuration settings
 
