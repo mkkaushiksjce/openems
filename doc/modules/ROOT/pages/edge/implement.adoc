@@ -184,7 +184,7 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 <1> The *@ObjectClassDefinition* annotation defines this file as a Meta Type Resource for OSGi configuration admin. Use it to set a _name_ and _description_ for this OpenEMS Component.
 // TODO add screenshot that shows how the strings are used in Apache
 <2> The *service_pid* is used in internally by OpenEMS Edge framework and is automatically filled by OSGi.
-<3> The *id* configuration parameter sets the OpenEMS Component-ID (see xref:coreconcepts.adoc#channel[Channel Adress]). _Note_: A *default* ID 'meter0' is defined. It is good practice to define such an ID here, as it simplifies configuration in the UI.
+<3> The *id* configuration parameter sets the OpenEMS Component-ID (see xref:coreconcepts.adoc[Channel Adress]). _Note_: A *default* ID 'meter0' is defined. It is good practice to define such an ID here, as it simplifies configuration in the UI.
 <4> The *enabled* parameter provides a _soft_ way of deactivating an OpenEMS Component programmatically.
 <5> The *@AttributeDefinition* annotation provides meta information about a configuration parameter like _name_ and _description_.
 <6> The 'Meter' nature requires definition of a MeterType that defines the purpose of the Meter. We will let the user define this type by a configuration parameter.
