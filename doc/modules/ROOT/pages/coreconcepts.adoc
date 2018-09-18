@@ -68,7 +68,7 @@ Example: the state of charge ("Soc") of the first energy storage system ("ess0")
 
 == Scheduler
 
-The Scheduler handles the order, in which Controllers are executed. For details see <<Scheduler and Controller>> below.
+The Scheduler handles the order, in which Controllers are executed. For details see <<Scheduler and Controller>>xref:edge/controller.adoc[Scheduler and Controller] below.
 
 // TODO: add link to all Schedulers below. Existing Scheduler implementations are described below.
 

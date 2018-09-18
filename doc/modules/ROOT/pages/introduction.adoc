@@ -86,7 +86,7 @@ Starting with version https://github.com/OpenEMS/openems/releases/tag/2018.7[201
 == System architecture
 
 OpenEMS is generally used in combination with external hardware and software components
-(the exception is a simulated development environment - see https://github.com/OpenEMS/openems/blob/old_master/README.md#get-started[Getting Started])
+(the exception is a simulated development environment - see xref:gettingstarted.adoc[Getting Started])
 As a brief overview, this is how OpenEMS is used in production setups:
 
 .OpenEMS system architecture
