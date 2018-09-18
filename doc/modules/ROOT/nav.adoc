@@ -7,6 +7,7 @@
 ** xref:edge/hardware.adoc[Hardware]
 ** xref:edge/scheduler.adoc[Scheduler]
 ** xref:edge/controller.adoc[Controller]
+** xref:edge/implement.adoc[Implementing a Device]
 ** xref:edge/build.adoc[Build OpenEMS Edge]
 ** xref:edge/deploy.adoc[Deploy OpenEMS Edge]
 * OpenEMS UI
